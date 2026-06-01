@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://techwithkathim.com
+Host: https://linkamarket.co.tz
 
 # Sitemaps
-Sitemap: https://techwithkathim.com/sitemap.xml
+Sitemap: https://linkamarket.co.tz/sitemap.xml

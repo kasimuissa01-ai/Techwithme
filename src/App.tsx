@@ -12,6 +12,8 @@ import Solution from "./components/Solution";
 import Products from "./components/Products";
 import LeadMagnet from "./components/LeadMagnet";
 import Testimonials from "./components/Testimonials";
+import Blog from "./components/Blog";
+import FAQ from "./components/FAQ";
 import About from "./components/About";
 import FinalCTA from "./components/FinalCTA";
 import Footer from "./components/Footer";
@@ -47,6 +49,12 @@ export default function App() {
 
       {/* 8. TESTIMONIAL SECTION */}
       <Testimonials />
+
+      {/* 8.5. STRATEGY BLOG MASTERCLASSES */}
+      <Blog />
+
+      {/* 8.6. FAQ ACCORDION */}
+      <FAQ />
 
       {/* 9. ABOUT SECTION */}
       <About />

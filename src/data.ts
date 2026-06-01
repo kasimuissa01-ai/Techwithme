@@ -120,3 +120,68 @@ export const TESTIMONIALS: TestimonialItem[] = [
     rating: 5
   }
 ];
+
+export interface FAQItem {
+  question: string;
+  answer: string;
+}
+
+export interface BlogPost {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  readTime: string;
+  image: string;
+  date: string;
+}
+
+export const FAQ_ITEMS: FAQItem[] = [
+  {
+    question: "Do I really not have to show my face?",
+    answer: "Yes, exactly! This system is 100% designed for faceless creators. You will learn how to use aesthetic stock footage, AI-generated voices, text-on-screen overlays, and Pinterest visuals to drive massive traffic without ever turning the camera on yourself."
+  },
+  {
+    question: "How much money do I need to get started?",
+    answer: "You can start with $0. We focus exclusively on organic, free traffic platforms like Pinterest and search engines, and teach you how to use free tiers of AI content creation tools. Your direct start-off cost can literally be zero."
+  },
+  {
+    question: "Is this beginner friendly if I have no experience?",
+    answer: "Absolutely. We don't assume you have any coding, graphic design, or online marketing experience. We give you the exact copy-paste prompts, beautiful pre-made Canva templates, and standard instructions designed to take you from absolute zero to launch."
+  },
+  {
+    question: "How soon can I expect my first results?",
+    answer: "While results vary based on effort and niche, our structured 30-day plan is designed to help you launch your platform and start earning affiliate saves or sales within the first 3 or 4 weeks."
+  }
+];
+
+export const BLOG_POSTS: BlogPost[] = [
+  {
+    id: "blog-1",
+    title: "How to Build a Faceless Brand on Pinterest in 2026",
+    slug: "faceless-pinterest-brand",
+    excerpt: "Stop overcomplicating traffic. Discover how aesthetic Pinterest visual boards can generate thousands of automated visitors without showing your face.",
+    readTime: "5 min read",
+    image: "https://images.unsplash.com/photo-1493119508027-2b584f234d6c?auto=format&fit=crop&q=80&w=400&h=250",
+    date: "May 25, 2026"
+  },
+  {
+    id: "blog-2",
+    title: "Top 7 AI Tools for Headless Content Creation",
+    slug: "top-ai-tools-headless-content",
+    excerpt: "We tested 30+ tools. Here are the precise AI text-to-speech, transcription, scriptwriting, and visual editors designed to save you 20 hours a week.",
+    readTime: "7 min read",
+    image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&q=80&w=400&h=250",
+    date: "May 28, 2026"
+  },
+  {
+    id: "blog-3",
+    title: "From $0 to $3,000/Month: The Passive Affiliate Blueprint",
+    slug: "monthly-passive-affiliate-blueprint",
+    excerpt: "The exact scaling framework. Learn which niches convert best, how to select premium affiliate offers, and the simple way to place links anonymously.",
+    readTime: "9 min read",
+    image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=400&h=250",
+    date: "May 30, 2026"
+  }
+];
+

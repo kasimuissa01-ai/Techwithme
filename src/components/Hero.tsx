@@ -1,7 +1,10 @@
-import { motion } from "motion/react";
-import { ArrowRight, ChevronDown } from "lucide-react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
+import { ArrowRight, ChevronDown, Loader2 } from "lucide-react";
 
 export default function Hero() {
+  const [imageLoaded, setImageLoaded] = useState(false);
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -36,18 +39,41 @@ export default function Hero() {
       id="hero"
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-brand-dark"
     >
+      {/* Background Image Loading Spinner */}
+      <AnimatePresence>
+        {!imageLoaded && (
+          <motion.div
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="absolute inset-0 z-20 flex items-center justify-center bg-brand-dark"
+          >
+            <div className="flex flex-col items-center gap-3">
+              <Loader2 className="w-8 h-8 text-brand-primary animate-spin" />
+              <span className="text-white/60 text-xs font-semibold uppercase tracking-widest font-sans">
+                Curating Aesthetics...
+              </span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Background Image with Dark Overlay */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 bg-brand-dark">
         <img
           src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?auto=format&fit=crop&q=80&w=1600"
           alt="Woman working on laptop, warm aesthetic"
-          className="w-full h-full object-cover opacity-35"
+          className={`w-full h-full object-cover transition-opacity duration-1000 ${
+            imageLoaded ? "opacity-35" : "opacity-0"
+          }`}
           referrerPolicy="no-referrer"
           loading="lazy"
+          onLoad={() => setImageLoaded(true)}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/80 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-r from-brand-dark/50 via-transparent to-brand-dark/50" />
       </div>
+
 
       {/* Main Hero Contents */}
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-24 pb-16 flex flex-col items-center">
