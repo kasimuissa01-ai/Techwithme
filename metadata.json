@@ -1,0 +1,6 @@
+{
+  "name": "TechWithKathim",
+  "description": "Build online income without showing your face. AI prompts, templates and 30-day plan for women worldwide.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
