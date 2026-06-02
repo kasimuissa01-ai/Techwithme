@@ -15,6 +15,7 @@ export default function BlogDetail({ slug, onNavigate, onSelectProduct }: BlogDe
 
   const [copiedClean, setCopiedClean] = useState(false);
   const [copiedBulletproof, setCopiedBulletproof] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   if (!post) {
     return (
@@ -96,16 +97,31 @@ export default function BlogDetail({ slug, onNavigate, onSelectProduct }: BlogDe
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.1 }}
-          className="relative aspect-[21/9] rounded-3xl overflow-hidden shadow-md border border-brand-primary/5 mb-12 bg-brand-surface"
+          className="relative aspect-[16/10] sm:aspect-[16/9] md:aspect-[21/9] rounded-3xl overflow-hidden shadow-md border border-brand-primary/5 mb-12 bg-brand-surface"
         >
-          <img
-            src={post.image.replace("w=400&h=250", "w=1200&h=600")}
-            alt={post.title}
-            loading="lazy"
-            referrerPolicy="no-referrer"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+          {imageError ? (
+            <div className="w-full h-full bg-gradient-to-br from-brand-primary/10 via-[#FFF4F7] to-brand-secondary/15 flex flex-col items-center justify-center p-6 text-center select-none">
+              <span className="text-4xl mb-3">📌</span>
+              <h3 className="font-serif text-lg sm:text-xl font-bold text-brand-dark max-w-lg leading-tight">
+                {post.title}
+              </h3>
+              <p className="text-[10px] sm:text-xs text-brand-primary/75 mt-2 uppercase tracking-widest font-semibold">
+                Faceless Earning Strategy Masterclass
+              </p>
+            </div>
+          ) : (
+            <>
+              <img
+                src={post.image.replace("w=400&h=250", "w=1200&h=600")}
+                alt={post.title}
+                onError={() => setImageError(true)}
+                loading="lazy"
+                referrerPolicy="no-referrer"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent" />
+            </>
+          )}
         </motion.div>
 
         {/* Main Body Contents */}
@@ -199,13 +215,13 @@ export default function BlogDetail({ slug, onNavigate, onSelectProduct }: BlogDe
           initial={{ opacity: 0, scale: 0.98 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          className="mt-14 p-6 sm:p-8 bg-[#FFF9FB] rounded-3xl border border-brand-primary/10 shadow-sm"
+          className="mt-14 p-4 sm:p-8 bg-[#FFF9FB] rounded-3xl border border-brand-primary/10 shadow-sm"
         >
           <div className="flex items-start gap-4">
             <div className="flex-shrink-0 p-3 bg-brand-primary/10 rounded-2xl hidden sm:block">
               <Share2 className="w-6 h-6 text-brand-primary" />
             </div>
-            <div className="flex-1">
+            <div className="flex-1 min-w-0">
               <h3 className="font-serif text-lg sm:text-lg font-bold text-brand-dark mb-1 flex items-center gap-2">
                 <span className="sm:hidden">📌</span> Pinterest Publishing Companion
               </h3>
@@ -216,12 +232,12 @@ export default function BlogDetail({ slug, onNavigate, onSelectProduct }: BlogDe
               <div className="space-y-4">
                 {/* Clean URL Option */}
                 <div className="bg-white p-4 rounded-2xl border border-brand-primary/5 shadow-inner">
-                  <div className="flex items-center justify-between gap-4 mb-1.5 flex-wrap">
-                    <span className="text-xs font-bold text-brand-secondary flex items-center gap-1">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                      Option A: Standard Clean Link (Pre-rendered for Pinterest Rich Pins)
+                  <div className="flex items-center justify-between gap-4 mb-2 flex-wrap">
+                    <span className="text-xs font-bold text-brand-secondary flex items-start gap-1.5 flex-1 min-w-[240px]">
+                      <span className="w-1.5 h-1.5 mt-1.5 rounded-full bg-emerald-500 animate-pulse flex-shrink-0" />
+                      <span>Option A: Standard Clean Link (Pre-rendered for Pinterest Rich Pins)</span>
                     </span>
-                    <span className="text-[10px] text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full font-semibold">
+                    <span className="text-[10px] text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full font-semibold self-start">
                       SEO Optimized
                     </span>
                   </div>
@@ -256,12 +272,12 @@ export default function BlogDetail({ slug, onNavigate, onSelectProduct }: BlogDe
 
                 {/* Bulletproof Redirect Option */}
                 <div className="bg-white p-4 rounded-2xl border border-brand-primary/5 shadow-inner">
-                  <div className="flex items-center justify-between gap-4 mb-1.5 flex-wrap">
-                    <span className="text-xs font-bold text-[#E67E22] flex items-center gap-1">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#E67E22]" />
-                      Option B: Universal Fallback Link (100% immune to 404 server errors)
+                  <div className="flex items-center justify-between gap-4 mb-2 flex-wrap">
+                    <span className="text-xs font-bold text-[#E67E22] flex items-start gap-1.5 flex-1 min-w-[240px]">
+                      <span className="w-1.5 h-1.5 mt-1.5 rounded-full bg-[#E67E22] flex-shrink-0" />
+                      <span>Option B: Universal Fallback Link (100% immune to 404 server errors)</span>
                     </span>
-                    <span className="text-[10px] text-brand-primary bg-[#FFF0F5] px-2.5 py-0.5 rounded-full font-semibold">
+                    <span className="text-[10px] text-brand-primary bg-[#FFF0F5] px-2.5 py-0.5 rounded-full font-semibold self-start">
                       Bulletproof Redirect
                     </span>
                   </div>

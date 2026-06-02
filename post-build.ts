@@ -124,8 +124,8 @@ for (const post of BLOG_POSTS) {
 
   // 4. Inject physical fallback content inside the raw HTML's mounting point
   postHtml = postHtml.replace(
-    /<div id="root">([\s\S]*?)<\/div>/,
-    `<div id="root">${staticBlogHtml}</div>`
+    /<div id="root">([\s\S]*?)<\/div>(\s*<script type=\"module\")/,
+    `<div id="root">${staticBlogHtml}</div>$2`
   );
 
   // Save html files

@@ -1,6 +1,32 @@
+import { useState } from "react";
 import { motion } from "motion/react";
 import { BookOpen, Calendar, ArrowUpRight } from "lucide-react";
 import { BLOG_POSTS } from "../data";
+
+function BlogCardImage({ src, alt, className }: { src: string; alt: string; className: string }) {
+  const [error, setError] = useState(false);
+
+  if (error) {
+    return (
+      <div className="w-full h-full bg-gradient-to-br from-brand-primary/10 via-[#FFF4F7] to-brand-secondary/15 flex items-center justify-center p-4 text-center select-none">
+        <span className="font-serif text-sm font-bold text-brand-dark">
+          📚 Strategy Guide
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <img
+      src={src}
+      alt={alt}
+      onError={() => setError(true)}
+      loading="lazy"
+      referrerPolicy="no-referrer"
+      className={className}
+    />
+  );
+}
 
 export default function Blog() {
   const containerVariants = {
@@ -69,11 +95,9 @@ export default function Blog() {
             >
               {/* Image Container with Dynamic Scale hover */}
               <div className="relative aspect-[1.6/1] overflow-hidden bg-brand-surface">
-                <img
+                <BlogCardImage
                   src={post.image}
                   alt={post.title}
-                  loading="lazy"
-                  referrerPolicy="no-referrer"
                   className="w-full h-full object-cover transform duration-500 group-hover:scale-105"
                 />
                 <div className="absolute top-4 left-4 bg-brand-dark/85 backdrop-blur-md text-white text-[10px] sm:text-xs font-semibold uppercase px-3.5 py-1.5 rounded-full tracking-wider">
