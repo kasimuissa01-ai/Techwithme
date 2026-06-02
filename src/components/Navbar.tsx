@@ -22,6 +22,8 @@ export default function Navbar() {
     { name: "Products", href: "#products" },
     { name: "Free Guide", href: "#free-guide" },
     { name: "Reviews", href: "#reviews" },
+    { name: "Blog", href: "#blog" },
+    { name: "FAQ", href: "#faq" },
     { name: "About", href: "#about" },
   ];
 
@@ -41,9 +43,9 @@ export default function Navbar() {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <a href="#" className="flex items-center">
+            <a href="/" className="flex items-center">
               <span className="font-serif text-2xl font-bold tracking-tight bg-gradient-to-r from-brand-primary via-brand-secondary to-brand-accent bg-clip-text text-transparent">
-                TechWithKathim
+                LinkaMarket
               </span>
             </a>
           </div>

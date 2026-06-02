@@ -58,7 +58,7 @@ export default function Blog() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-80px" }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 gap-8"
         >
           {BLOG_POSTS.map((post) => (
             <motion.article
@@ -90,7 +90,7 @@ export default function Blog() {
                   </div>
                   
                   <h3 className="font-serif text-lg sm:text-xl font-bold text-brand-dark leading-snug mb-3 group-hover:text-brand-primary transition-colors">
-                    <a href={`#blog-${post.slug}`} className="hover:underline focus:outline-none focus:underline">
+                    <a href={`/blog/${post.slug}`} className="hover:underline focus:outline-none focus:underline">
                       {post.title}
                     </a>
                   </h3>
@@ -100,14 +100,17 @@ export default function Blog() {
                   </p>
                 </div>
 
-                <div className="pt-4 border-t border-brand-primary/5 flex items-center justify-between mt-auto">
-                  <span className="text-xs sm:text-sm font-semibold text-brand-primary group-hover:text-brand-primary/80 transition-colors flex items-center gap-1.5">
+                <a 
+                  href={`/blog/${post.slug}`}
+                  className="pt-4 border-t border-brand-primary/5 flex items-center justify-between mt-auto focus:outline-none"
+                >
+                  <span className="text-xs sm:text-sm font-semibold text-brand-primary group-hover:text-brand-primary/80 transition-colors flex items-center gap-1.5 focus:underline">
                     Read Masterclass <BookOpen className="w-4 h-4" />
                   </span>
                   <div className="w-8 h-8 rounded-full bg-brand-primary/5 text-brand-primary flex items-center justify-center transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform">
                     <ArrowUpRight className="w-4 h-4" />
                   </div>
-                </div>
+                </a>
               </div>
 
             </motion.article>
