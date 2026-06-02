@@ -87,7 +87,7 @@ export default function FinalCTA() {
               whileTap={{ scale: 0.95 }}
               className="w-full sm:w-auto inline-flex items-center justify-center px-10 py-5 rounded-2.5xl text-base sm:text-lg font-bold text-white bg-brand-primary shadow-xl hover:bg-brand-primary/95 hover:shadow-brand-primary/30 transition-all cursor-pointer"
             >
-              Get the AI Income Starter Kit — $12 <ArrowRight className="ml-2 w-5.5 h-5.5" />
+              Get the AI Income Starter Kit — $6 <ArrowRight className="ml-2 w-5.5 h-5.5" />
             </motion.a>
           </div>
 

@@ -134,7 +134,7 @@ export default function Hero() {
               whileTap={{ scale: 0.95 }}
               className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-full text-base font-bold text-white bg-brand-primary shadow-lg hover:bg-brand-primary/90 hover:shadow-brand-primary/20 hover:shadow-2xl transition-all"
             >
-              Get the Starter Kit — $12 <ArrowRight className="ml-2 w-5 h-5" />
+              Get the Starter Kit — $6 <ArrowRight className="ml-2 w-5 h-5" />
             </motion.a>
 
             <motion.a

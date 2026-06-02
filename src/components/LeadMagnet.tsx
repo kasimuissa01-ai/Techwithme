@@ -1,18 +1,42 @@
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useEffect } from "react";
 import { motion } from "motion/react";
 import { Send, CheckCircle2 } from "lucide-react";
+import { addWaitlistSubscriber, subscribeToWaitlistCount } from "../firebase";
 
 export default function LeadMagnet() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [waitlistCount, setWaitlistCount] = useState(0);
 
-  const handleSubmit = (e: FormEvent) => {
+  useEffect(() => {
+    const unsubscribe = subscribeToWaitlistCount((count) => {
+      setWaitlistCount(count);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!email || !email.includes("@")) return;
+    const cleanEmail = email.trim();
+    if (!cleanEmail || !cleanEmail.includes("@")) return;
 
-    // Simulate standard capture success state
-    setSubmitted(true);
-    setEmail("");
+    setLoading(true);
+    setErrorMsg("");
+    try {
+      const response = await addWaitlistSubscriber(cleanEmail, "", "lead-magnet");
+      if (response.success) {
+        setSubmitted(true);
+        setEmail("");
+      } else {
+        setErrorMsg("Please check your internet connection and try again.");
+      }
+    } catch (err) {
+      setErrorMsg("Error registering email. Please check your network and try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -46,6 +70,17 @@ export default function LeadMagnet() {
               Subscribe and instantly receive the complete prompt library, 3 high-converting Pinterest templates, and our 30-day faceless launch path sheet.
             </p>
 
+            {/* Real-time Waitlist Counter Badge */}
+            <div className="mb-5 flex items-center gap-2.5 bg-[#FFF6FA] border border-brand-primary/10 rounded-2xl px-4 py-2 text-xs sm:text-sm text-brand-secondary font-medium shadow-sm">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-primary opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-primary"></span>
+              </span>
+              <span>
+                Live System Activity: <strong className="text-brand-primary font-bold">{waitlistCount} women</strong> have joined our global study group & wishlist!
+              </span>
+            </div>
+
             {/* Email Form with Local Interactive Success Feedback */}
             <div className="w-full max-w-lg mb-4">
               {submitted ? (
@@ -63,24 +98,33 @@ export default function LeadMagnet() {
                   </div>
                 </motion.div>
               ) : (
-                <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter your email address..."
-                    required
-                    className="flex-1 px-5 py-4 rounded-2xl border border-brand-primary/15 bg-white text-brand-dark placeholder-brand-text/50 focus:outline-none focus:ring-2 focus:ring-brand-primary/30 shadow-[0_4px_16px_0_rgba(244,63,143,0.02)] transition-all"
-                  />
-                  <motion.button
-                    type="submit"
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                    className="w-full sm:w-auto inline-flex items-center justify-center px-7 py-4 rounded-2xl text-sm font-bold text-white bg-brand-dark hover:bg-brand-primary hover:shadow-lg transition-all cursor-pointer whitespace-nowrap"
-                  >
-                    Send Me the Guide <Send className="ml-2 w-4 h-4" />
-                  </motion.button>
-                </form>
+                <div className="space-y-3">
+                  <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Enter your email address..."
+                      required
+                      disabled={loading}
+                      className="flex-1 px-5 py-4 rounded-2xl border border-brand-primary/15 bg-white text-brand-dark placeholder-brand-text/50 focus:outline-none focus:ring-2 focus:ring-brand-primary/30 shadow-[0_4px_16px_0_rgba(244,63,143,0.02)] transition-all disabled:opacity-60"
+                    />
+                    <motion.button
+                      type="submit"
+                      disabled={loading}
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
+                      className="w-full sm:w-auto inline-flex items-center justify-center px-7 py-4 rounded-2xl text-sm font-bold text-white bg-brand-dark hover:bg-brand-primary hover:shadow-lg transition-all cursor-pointer whitespace-nowrap disabled:opacity-50"
+                    >
+                      {loading ? "Sending..." : "Send Me the Guide"} <Send className="ml-2 w-4 h-4" />
+                    </motion.button>
+                  </form>
+                  {errorMsg && (
+                    <p className="text-xs text-red-500 font-medium text-left bg-red-50 border border-red-100 rounded-xl px-4 py-2">
+                      ⚠️ {errorMsg}
+                    </p>
+                  )}
+                </div>
               )}
             </div>
 

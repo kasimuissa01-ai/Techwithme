@@ -1,13 +1,14 @@
 import { motion } from "motion/react";
 import { ArrowLeft, BookOpen, Clock, Calendar, ShieldCheck, Heart, Award, ArrowUpRight } from "lucide-react";
-import { BLOG_POSTS, BlogPost } from "../data";
+import { BLOG_POSTS, BlogPost, PRODUCTS, ProductItem } from "../data";
 
 interface BlogDetailProps {
   slug: string;
   onNavigate: (path: string) => void;
+  onSelectProduct: (product: ProductItem) => void;
 }
 
-export default function BlogDetail({ slug, onNavigate }: BlogDetailProps) {
+export default function BlogDetail({ slug, onNavigate, onSelectProduct }: BlogDetailProps) {
   // Find the post representing this slug
   const post = BLOG_POSTS.find((p) => p.slug === slug);
 
@@ -230,7 +231,7 @@ export default function BlogDetail({ slug, onNavigate }: BlogDetailProps) {
                 </span>
                 <div className="flex items-end justify-center md:justify-end gap-2 mt-1">
                   <span className="text-3.5xl sm:text-4xl font-extrabold text-white">
-                    $12
+                    $6
                   </span>
                   <span className="text-sm line-through text-white/40 mb-1">
                     $47
@@ -238,18 +239,19 @@ export default function BlogDetail({ slug, onNavigate }: BlogDetailProps) {
                 </div>
               </div>
 
-              <motion.a
-                href="https://gumroad.com/l/ai-income-kit"
-                target="_blank"
-                rel="noopener noreferrer"
+              <motion.button
+                onClick={() => {
+                  const kit = PRODUCTS.find((p) => p.id === "ai-income-kit");
+                  if (kit) onSelectProduct(kit);
+                }}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="inline-flex items-center justify-center px-6 py-3.5 rounded-full text-brand-dark bg-white hover:bg-brand-secondary/90 hover:text-white font-bold shadow-lg transition-all"
+                className="inline-flex items-center justify-center px-6 py-3.5 rounded-full text-brand-dark bg-white hover:bg-brand-secondary/90 hover:text-white font-bold shadow-lg transition-all cursor-pointer"
               >
-                Instant Access <ArrowUpRight className="ml-2 w-4.5 h-4.5" />
-              </motion.a>
+                Join VIP Waitlist <ArrowUpRight className="ml-2 w-4.5 h-4.5" />
+              </motion.button>
               <span className="text-[10px] text-white/50 mt-2 block italic">
-                Secure checkout via Gumroad
+                75% discount voucher included
               </span>
             </div>
           </div>

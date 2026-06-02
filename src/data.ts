@@ -63,7 +63,7 @@ export const PRODUCTS: ProductItem[] = [
   {
     id: "ai-income-kit",
     title: "AI Income Starter Kit",
-    price: "$12",
+    price: "$6",
     originalPrice: "$47",
     featured: true,
     theme: "pink",

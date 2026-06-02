@@ -18,9 +18,19 @@ import About from "./components/About";
 import FinalCTA from "./components/FinalCTA";
 import Footer from "./components/Footer";
 import BlogDetail from "./components/BlogDetail";
+import { ProductItem } from "./data";
+import WaitlistModal from "./components/WaitlistModal";
 
 export default function App() {
-  const [currentPath, setCurrentPath] = useState(window.location.pathname);
+  const [currentPath, setCurrentPath] = useState(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const blogParam = searchParams.get("blog") || searchParams.get("p");
+    if (blogParam) {
+      return `/blog/${blogParam}`;
+    }
+    return window.location.pathname;
+  });
+  const [selectedWaitlistProduct, setSelectedWaitlistProduct] = useState<ProductItem | null>(null);
 
   useEffect(() => {
     // Set official page document title as requested in design parameters
@@ -29,7 +39,13 @@ export default function App() {
 
   useEffect(() => {
     const handlePopState = () => {
-      setCurrentPath(window.location.pathname);
+      const searchParams = new URLSearchParams(window.location.search);
+      const blogParam = searchParams.get("blog") || searchParams.get("p");
+      if (blogParam) {
+        setCurrentPath(`/blog/${blogParam}`);
+      } else {
+        setCurrentPath(window.location.pathname);
+      }
     };
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
@@ -108,7 +124,7 @@ export default function App() {
 
       {isBlogDetail ? (
         /* Renders Detailed Article Masterclass Route */
-        <BlogDetail slug={blogSlug} onNavigate={navigate} />
+        <BlogDetail slug={blogSlug} onNavigate={navigate} onSelectProduct={setSelectedWaitlistProduct} />
       ) : (
         /* Renders Standard Main Homepage Layout */
         <>
@@ -125,7 +141,7 @@ export default function App() {
           <Solution />
 
           {/* 6. PRODUCTS SECTION */}
-          <Products />
+          <Products onSelectProduct={setSelectedWaitlistProduct} />
 
           {/* 7. FREE LEAD MAGNET SECTION */}
           <LeadMagnet />
@@ -149,6 +165,9 @@ export default function App() {
 
       {/* 11. FOOTER */}
       <Footer />
+
+      {/* 12. WISHLIST / WAITLIST SUBSCRIPTION MODAL */}
+      <WaitlistModal product={selectedWaitlistProduct} onClose={() => setSelectedWaitlistProduct(null)} />
     </div>
   );
 }

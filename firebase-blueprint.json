@@ -1,0 +1,52 @@
+{
+  "entities": {
+    "WaitlistSubscriber": {
+      "title": "Waitlist Subscriber",
+      "description": "A user who signed up for the AI Income Starter Kit / Guide Book waitlist.",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Email address of the subscriber"
+        },
+        "name": {
+          "type": "string",
+          "description": "Optional name of the subscriber"
+        },
+        "source": {
+          "type": "string",
+          "description": "Source or element identifier where the user submitted their signup"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of when the signup was created"
+        }
+      },
+      "required": ["email", "createdAt"]
+    },
+    "WaitlistStats": {
+      "title": "Waitlist Stats",
+      "description": "Aggregated waitlist statistics.",
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "description": "The exact running count of subscribers"
+        }
+      },
+      "required": ["count"]
+    }
+  },
+  "firestore": {
+    "waitlist/{subscriberId}": {
+      "schema": "WaitlistSubscriber",
+      "description": "Collection of waitlist subscribers for the Starter Kit."
+    },
+    "stats/{statId}": {
+      "schema": "WaitlistStats",
+      "description": "Counter doc tracking total number of waitlist subscribers."
+    }
+  }
+}

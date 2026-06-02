@@ -2,7 +2,11 @@ import { motion } from "motion/react";
 import { Check, Flame } from "lucide-react";
 import { PRODUCTS, ProductItem } from "../data";
 
-export default function Products() {
+interface ProductsProps {
+  onSelectProduct: (product: ProductItem) => void;
+}
+
+export default function Products({ onSelectProduct }: ProductsProps) {
   const containerVariants = {
     hidden: {},
     visible: {
@@ -163,16 +167,14 @@ export default function Products() {
                   </ul>
 
                   {/* Call to action button */}
-                  <motion.a
-                    href={pkg.buttonLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <motion.button
+                    onClick={() => onSelectProduct(pkg)}
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
-                    className={`block w-full py-4 px-6 rounded-2xl text-center text-sm font-bold tracking-wide transition-all ${actionBtn}`}
+                    className={`block w-full py-4 px-6 rounded-2xl text-center text-sm font-bold tracking-wide transition-all cursor-pointer ${actionBtn}`}
                   >
-                    {pkg.buttonText}
-                  </motion.a>
+                    Join VIP Waitlist & Save 75%
+                  </motion.button>
                 </div>
               </motion.div>
             );
