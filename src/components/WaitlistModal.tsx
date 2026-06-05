@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { X, Send, CheckCircle2, Award, Clock, Sparkles } from "lucide-react";
 import { addWaitlistSubscriber } from "../firebase";
 import { ProductItem } from "../data";
+import { mixpanelTrack } from "../lib/mixpanel";
 
 interface WaitlistModalProps {
   product: ProductItem | null;
@@ -26,10 +27,14 @@ export default function WaitlistModal({ product, onClose }: WaitlistModalProps) 
     }
   }, [product]);
 
-  // Prevent background scrolling when modal is open
+  // Prevent background scrolling when modal is open and track opening behavior
   useEffect(() => {
     if (product) {
       document.body.style.overflow = "hidden";
+      mixpanelTrack("Waitlist Modal Opened", {
+        productId: product.id,
+        productTitle: product.title
+      });
     } else {
       document.body.style.overflow = "unset";
     }
@@ -55,6 +60,12 @@ export default function WaitlistModal({ product, onClose }: WaitlistModalProps) 
       const response = await addWaitlistSubscriber(cleanEmail, name, `waitlist-${product.id}`);
       if (response.success) {
         setSubmitted(true);
+        mixpanelTrack("Waitlist Joined", {
+          productId: product.id,
+          productTitle: product.title,
+          name: name,
+          email: cleanEmail
+        });
       } else {
         setErrorMsg("Failed to join the waitlist. Please verify your connection and try again.");
       }

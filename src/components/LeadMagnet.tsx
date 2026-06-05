@@ -2,6 +2,7 @@ import { useState, FormEvent, useEffect } from "react";
 import { motion } from "motion/react";
 import { Send, CheckCircle2 } from "lucide-react";
 import { addWaitlistSubscriber, subscribeToWaitlistCount } from "../firebase";
+import { mixpanelTrack } from "../lib/mixpanel";
 
 export default function LeadMagnet() {
   const [email, setEmail] = useState("");
@@ -29,6 +30,10 @@ export default function LeadMagnet() {
       if (response.success) {
         setSubmitted(true);
         setEmail("");
+        mixpanelTrack("Lead Magnet Claimed", {
+          email: cleanEmail,
+          campaign: "50+ AI Prompts Free Guide"
+        });
       } else {
         setErrorMsg("Please check your internet connection and try again.");
       }

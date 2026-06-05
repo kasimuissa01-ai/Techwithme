@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import { ArrowLeft, BookOpen, Clock, Calendar, ShieldCheck, Heart, Award, ArrowUpRight, Share2, Copy, Check, ExternalLink } from "lucide-react";
 import { BLOG_POSTS, BlogPost, PRODUCTS, ProductItem } from "../data";
+import { mixpanelTrack } from "../lib/mixpanel";
 
 interface BlogDetailProps {
   slug: string;
@@ -254,6 +255,11 @@ export default function BlogDetail({ slug, onNavigate, onSelectProduct }: BlogDe
                         navigator.clipboard.writeText(url);
                         setCopiedClean(true);
                         setTimeout(() => setCopiedClean(false), 2000);
+                        mixpanelTrack("Pinterest Companion Link Copied", {
+                          type: "Option A: Clean Link",
+                          slug: post.slug,
+                          title: post.title
+                        });
                       }}
                       className="px-3 py-1.5 bg-brand-primary hover:bg-brand-primary/95 text-white text-xs font-bold rounded-lg transition-colors flex items-center gap-1 cursor-pointer flex-shrink-0"
                     >
@@ -294,6 +300,11 @@ export default function BlogDetail({ slug, onNavigate, onSelectProduct }: BlogDe
                         navigator.clipboard.writeText(url);
                         setCopiedBulletproof(true);
                         setTimeout(() => setCopiedBulletproof(false), 2000);
+                        mixpanelTrack("Pinterest Companion Link Copied", {
+                          type: "Option B: Bulletproof",
+                          slug: post.slug,
+                          title: post.title
+                        });
                       }}
                       className="px-3 py-1.5 bg-brand-primary hover:bg-brand-primary/95 text-white text-xs font-bold rounded-lg transition-colors flex items-center gap-1 cursor-pointer flex-shrink-0"
                     >

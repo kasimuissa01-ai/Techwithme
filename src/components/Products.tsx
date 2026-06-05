@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import { Check, Flame } from "lucide-react";
 import { PRODUCTS, ProductItem } from "../data";
+import { mixpanelTrack } from "../lib/mixpanel";
 
 interface ProductsProps {
   onSelectProduct: (product: ProductItem) => void;
@@ -168,7 +169,15 @@ export default function Products({ onSelectProduct }: ProductsProps) {
 
                   {/* Call to action button */}
                   <motion.button
-                    onClick={() => onSelectProduct(pkg)}
+                    onClick={() => {
+                      mixpanelTrack("Product Waitlist Clicked", {
+                        productId: pkg.id,
+                        productTitle: pkg.title,
+                        price: pkg.price,
+                        theme: pkg.theme
+                      });
+                      onSelectProduct(pkg);
+                    }}
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
                     className={`block w-full py-4 px-6 rounded-2xl text-center text-sm font-bold tracking-wide transition-all cursor-pointer ${actionBtn}`}

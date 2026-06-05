@@ -20,6 +20,7 @@ import Footer from "./components/Footer";
 import BlogDetail from "./components/BlogDetail";
 import { ProductItem } from "./data";
 import WaitlistModal from "./components/WaitlistModal";
+import { initMixpanel, mixpanelTrackPageView } from "./lib/mixpanel";
 
 export default function App() {
   const [currentPath, setCurrentPath] = useState(() => {
@@ -31,6 +32,16 @@ export default function App() {
     return window.location.pathname;
   });
   const [selectedWaitlistProduct, setSelectedWaitlistProduct] = useState<ProductItem | null>(null);
+
+  useEffect(() => {
+    // Initialize Mixpanel tracking
+    initMixpanel();
+  }, []);
+
+  useEffect(() => {
+    // Track page views on route changes
+    mixpanelTrackPageView(currentPath);
+  }, [currentPath]);
 
   useEffect(() => {
     // Set official page document title as requested in design parameters
