@@ -1,125 +1,8 @@
 export interface StatItem {
-  number: number;
+  number: string;
   suffix: string;
   label: string;
 }
-
-export interface PainPoint {
-  id: string;
-  emoji: string;
-  text: string;
-}
-
-export interface TimelineStep {
-  id: number;
-  title: string;
-  description: string;
-  circleColor: string;
-}
-
-export interface ProductItem {
-  id: string;
-  title: string;
-  price: string;
-  originalPrice?: string;
-  featured: boolean;
-  theme: "pink" | "navy" | "white";
-  description: string;
-  buttonText: string;
-  buttonLink: string;
-  features: string[];
-}
-
-export interface TestimonialItem {
-  id: string;
-  quote: string;
-  author: string;
-  location: string;
-  rating: number;
-}
-
-export const STATS_ITEMS: StatItem[] = [
-  { number: 2, suffix: "", label: "Published Ebooks" },
-  { number: 50, suffix: "+", label: "AI Prompts Free" },
-  { number: 40, suffix: "+", label: "Countries Active" },
-  { number: 5, suffix: "-Hour", label: "Weekly System" },
-  { number: 0, suffix: "", label: "$0 to Start" }
-];
-
-export const PAIN_POINTS: PainPoint[] = [
-  { id: "pain-1", emoji: "😔", text: "You want to earn but don't know where to start" },
-  { id: "pain-2", emoji: "😰", text: "You're scared to show your face on camera" },
-  { id: "pain-3", emoji: "😤", text: "You've tried things before — nothing worked" }
-];
-
-export const TIMELINE_STEPS: TimelineStep[] = [
-  { id: 1, title: "RESEARCH", description: "Find high-demand, low-competition topics people search for every single day.", circleColor: "bg-brand-primary" },
-  { id: 2, title: "CREATE", description: "Make high-value digital products and graphic templates with AI—without ever showing your face.", circleColor: "bg-brand-accent" },
-  { id: 3, title: "GROW", description: "Scale your organic traffic exponentially on autopilot using aesthetic Pinterest visuals.", circleColor: "bg-purple-500" },
-  { id: 4, title: "EARN", description: "Collect simple direct sales or pocket high-ticket affiliate commissions worldwide.", circleColor: "bg-emerald-500" }
-];
-
-export const PRODUCTS: ProductItem[] = [
-  {
-    id: "ai-income-kit",
-    title: "AI Income Starter Kit",
-    price: "$6",
-    originalPrice: "$47",
-    featured: true,
-    theme: "pink",
-    description: "The complete 30-day system to earn online without showing your face. Actionable AI prompts, customizable templates, profitable affiliate programs + structured weekly schedule.",
-    buttonText: "Buy Now on Gumroad →",
-    buttonLink: "https://gumroad.com/l/ai-income-kit",
-    features: ["30-Day Action Plan", "50+ Actionable AI Prompts", "3 Professional Canva Templates", "High-Paying Affiliate Programs List"]
-  },
-  {
-    id: "faceless-content",
-    title: "Faceless Content Playbook",
-    price: "On Gumroad",
-    featured: false,
-    theme: "navy",
-    description: "Build profitable channels on YouTube, TikTok and Instagram without your face. Master faceless B-roll sourcing, modern voiceover generation, and viral monetization systems.",
-    buttonText: "Get It on Gumroad →",
-    buttonLink: "https://kasimuissa.road.com/l/ai-faceless-content", // the template had kasimuissa.gumroad.com, we will write it exactly
-    features: ["Anonymous Platform Strategy", "Faceless AI Video Script Tools", "Anonymity Preservation Guide", "Monetization Quickstart Guide"]
-  },
-  {
-    id: "burnout-reset",
-    title: "72hr Burnout Reset",
-    price: "$19",
-    originalPrice: "$47",
-    featured: false,
-    theme: "white",
-    description: "The ultimate weekend recalibration system designed for ambitious online entrepreneurs who can't afford to slow down. Stay focused, high-energy, and completely resilient.",
-    buttonText: "Buy Now — $19 →",
-    buttonLink: "https://gumroad.com/l/burnout-reset",
-    features: ["Scientific 3-Phase Protocol", "Hour-by-Hour Weekend Schedule", "Low-Stress Monday Re-entry System", "Forever Burnout Safeguards"]
-  }
-];
-
-export const TESTIMONIALS: TestimonialItem[] = [
-  {
-    id: "test-1",
-    quote: "I made my first $47 online in week 3 following this exact system. I was shocked it actually worked.",
-    author: "Sarah M.",
-    location: "Kenya",
-    rating: 5
-  },
-  {
-    id: "test-2",
-    quote: "No camera, no experience, no problem. The prompts alone saved me 10 hours of research.",
-    author: "Amina T.",
-    location: "Nigeria",
-    rating: 5
-  },
-  {
-    id: "test-3",
-    quote: "I downloaded the kit on a Friday. By Sunday I had my first pin up and my first save.",
-    author: "Priya K.",
-    location: "India",
-    rating: 5
-  }
-];
 
 export interface FAQItem {
   question: string;
@@ -144,239 +27,105 @@ export interface BlogPost {
   sections: BlogSection[];
 }
 
+export const STATS_ITEMS: StatItem[] = [
+  { number: "4.2M+", suffix: "Views", label: "Gained in 3 Weeks" },
+  { number: "10K+", suffix: "Followers", label: "Organic Growth" },
+  { number: "100%", suffix: "Private", label: "Faceless & Anonymous" },
+  { number: "$5", suffix: "Promo", label: "Limited Time Offer" }
+];
+
 export const FAQ_ITEMS: FAQItem[] = [
   {
-    question: "Do I really not have to show my face?",
-    answer: "Yes, exactly! This system is 100% designed for faceless creators. You will learn how to use aesthetic stock footage, AI-generated voices, text-on-screen overlays, and Pinterest visuals to drive massive traffic without ever turning the camera on yourself."
+    question: "What is the AI Video Virality Prompt Pack?",
+    answer: "It is our premium, secret vault of highly engineered text-to-video prompt recipes, visual hook frameworks, and aesthetic audio-sync guidelines. It teaches you step-by-step how to generate hyper-viral vertical videos for Instagram and TikTok without ever showing your face or speaking on camera."
   },
   {
-    question: "How much money do I need to get started?",
-    answer: "You can start with $0. We focus exclusively on organic, free traffic platforms like Pinterest and search engines, and teach you how to use free tiers of AI content creation tools. Your direct start-off cost can literally be zero."
+    question: "How did you reach 4 million views and 10,000 followers in 3 weeks?",
+    answer: "By combining three modern pillars: highly specific AI-generated lifestyle b-roll, high-curiosity psychological text-on-screen hooks, and trending audio tempos. Our prompt pack outlines the exact mathematical prompt templates and posting schedules we used to trigger the Instagram algorithm to push our reels to millions of feeds."
   },
   {
-    question: "Is this beginner friendly if I have no experience?",
-    answer: "Absolutely. We don't assume you have any coding, graphic design, or online marketing experience. We give you the exact copy-paste prompts, beautiful pre-made Canva templates, and standard instructions designed to take you from absolute zero to launch."
+    question: "What is your refund guarantee?",
+    answer: "We stand behind our prompts 100%. If you use our copy-paste prompt formulas consistently for 3 weeks and do not get video growth results, we will refund your money entirely. No questions asked."
   },
   {
-    question: "How soon can I expect my first results?",
-    answer: "While results vary based on effort and niche, our structured 30-day plan is designed to help you launch your platform and start earning affiliate saves or sales within the first 3 or 4 weeks."
+    question: "Is the prompt pack available right now?",
+    answer: "We are currently completing the final preparation, formatting, and performance testing for the prompt pack. By entering your email in our secure wishlist form, you secure your spot on the exclusive waitlist, locking in the special $5 launch price (normally $47) and receiving an instant alert the second it goes live today!"
   }
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
   {
     id: "blog-1",
-    title: "How to Build a Faceless Brand on Pinterest in 2026",
-    slug: "faceless-pinterest-brand",
-    excerpt: "Stop overcomplicating traffic. Discover how aesthetic Pinterest visual boards can generate thousands of automated visitors without showing your face.",
-    readTime: "5 min read",
-    image: "https://images.unsplash.com/photo-1493119508027-2b584f234d6c?auto=format&fit=crop&q=80&w=400&h=250",
-    date: "May 25, 2026",
-    intro: "Pinterest is one of the most misunderstood platforms on the internet today. While most creators treat it as another social feed, top earners know it is actually a visual search engine. Users don't visit Pinterest to see your face—they visit to discover ideas, solutions, and digital resources.",
+    title: "The 3-Week Instagram Blueprint: From 0 to 4.2 Million Views Faceless",
+    slug: "instagram-virality-blueprint",
+    excerpt: "Discover the exact viral algorithm system we used to scale an anonymous page to millions of organic impressions and over 10,000 followers in 21 days.",
+    readTime: "4 min read",
+    image: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&q=80&w=600&h=350",
+    date: "July 2, 2026",
+    intro: "The old way of growing on Instagram is officially dead. You no longer need to spend hours filming yourself, purchasing expensive DSLR cameras, or hiring professional video editors. A new wave of anonymous creators is dominating the reels feed using generative AI video prompts and highly calculated psychological hooks.",
     sections: [
       {
         type: "h2",
-        text: "The Power of Visual Intent"
+        text: "The Power of Algorithmic Loop Hooks"
       },
       {
         type: "p",
-        text: "Unlike platforms like Instagram or TikTok, which rely heavily on personality-driven video and algorithm interest-graphs, Pinterest caters directly to active search intent. When someone types 'how to earn online' or 'faceless content templates' into the Pinterest search bar, they are literally raising their hand for your solutions. This means you have zero need to show your face; your content is judged purely on the utility and aesthetic appeal of your pins."
+        text: "Instagram's recommendation engine is governed by a simple, dominant metric: watch time. When a user watches your 6-second aesthetic video loop multiple times because they are reading an extremely engaging, high-curiosity paragraph, the algorithm categorizes your content as 'highly addictive'. It immediately pushes it to thousands, then millions, of Explore pages."
       },
       {
         type: "h2",
-        text: "Step 1: Optimize Your Profile Search Performance"
+        text: "The AI Tools We Recommend"
       },
       {
         type: "p",
-        text: "To capture high-quality organic traffic, your profile needs to act as a keyword magnet. Instead of a vague handle, use clear, keyword-optimised names such as 'LinkaMarket | Passive AI Systems' or 'Aesthetic Wealth with Kath'. This ensures Pinterest indexes your profile under high-value niches."
-      },
-      {
-        type: "h2",
-        text: "Step 2: Create Aesthetic, High-Click Pins in Canva"
-      },
-      {
-        type: "p",
-        text: "Pinterest users are highly receptive to beautiful typography, harmonious color palettes, and elegant layouts. High-converting pins typically feature soft rose, off-white, or luxurious deep charcoal backgrounds paired with bold, clean typography."
+        text: "Our entire video workflow takes less than 15 minutes a day. We use a selected list of free and low-cost tools to generate premium lifestyle b-roll and pair them with trending audio cues:"
       },
       {
         type: "list",
-        text: "Make sure all your pins include these high-converting visual triggers:",
+        text: "To recreate this system, you only need three core components:",
         items: [
-          "High-contrast, bold headlines that trigger immediate curiosity",
-          "Soft aesthetic stock imagery or beautiful b-roll overlays",
-          "A small, elegant call-to-action bar (e.g., 'Free Starter Guide in Bio')",
-          "Clean margins and spacious padding for maximum premium feel"
+          "Canva or CapCut for overlaying neat typography and managing transitions",
+          "Our custom Midjourney/Runway prompt recipes to generate luxurious, high-end neutral stock clips",
+          "ElevenLabs for warm, authentic, human-like voice narration overlay"
         ]
       },
       {
         type: "quote",
-        text: "The secret to scaling Pinterest isn't virality—it's high-intent discovery. One well-designed pin can generate targeted, high-converting clicks for months or even years."
+        text: "By focusing on high-intent video templates rather than personal lifestyle vlogging, you build a media asset that drives traffic 24/7 while maintaining complete personal privacy."
       }
     ]
   },
   {
     id: "blog-2",
-    title: "Top 7 AI Tools for Headless Content Creation",
-    slug: "top-ai-tools-headless-content",
-    excerpt: "We tested 30+ tools. Here are the precise AI text-to-speech, transcription, scriptwriting, and visual editors designed to save you 20 hours a week.",
-    readTime: "7 min read",
-    image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&q=80&w=400&h=250",
-    date: "May 28, 2026",
-    intro: "The rise of generative AI has completely eliminated the traditional barriers to media production. Today, a single creator can research, write, narrate, edit, and publish high-converting content in a fraction of the time, all while maintaining absolute personal anonymity.",
+    title: "The Psychology of Viral Hook Writing: How to Stop the Scroll Instantly",
+    slug: "psychology-viral-hooks",
+    excerpt: "Stop writing boring captions. Master the five curiosity-trigger frameworks that make viewers spend 5x longer on your faceless reels.",
+    readTime: "3 min read",
+    image: "https://images.unsplash.com/photo-1542744094-3a31f103e35f?auto=format&fit=crop&q=80&w=600&h=350",
+    date: "July 1, 2026",
+    intro: "If your video does not capture attention in the first 1.5 seconds, it is dead on arrival. With average attention spans dropping below 3 seconds, successful faceless creators must master visual copywriting.",
     sections: [
       {
         type: "h2",
-        text: "The Headless Content Creator's Stack"
+        text: "The Three Curiosity Triggers"
       },
       {
         type: "p",
-        text: "Creating premium, headless content requires a suite of reliable tools that integrate seamlessly. Based on extensive real-world testing, these seven tools stand out for their efficiency, high output quality, and beginner-friendly user interfaces."
-      },
-      {
-        type: "h2",
-        text: "1. ElevenLabs (Ultra-Realistic Text-to-Speech)"
-      },
-      {
-        type: "p",
-        text: "In faceless video marketing, audio quality can make or break your audience retention. ElevenLabs offers incredibly real, authentic, warm voiceovers that sound completely human. You can choose from thousands of synthetic or cloned voices to matches your brand's specific tone and vibe."
-      },
-      {
-        type: "h2",
-        text: "2. Canva (Graphic Designs & Slide Layouts)"
-      },
-      {
-        type: "p",
-        text: "Canva is an indispensable powerhouse for creating viral Pinterest carousels, aesthetic cover mockups, and neat social feeds. Our AI Income Starter Kit includes fully customizable, pre-made Canva templates to give you a head start."
+        text: "Our prompt pack teaches you how to construct headlines that leverage specific cognitive triggers:"
       },
       {
         type: "list",
-        text: "Other core components of our high-velocity AI publishing stack:",
+        text: "The three most viral copywriting frameworks we use:",
         items: [
-          "Claude - Best-in-class conversational model for writing organic educational hooks and pins",
-          "CapCut Desktop - The absolute gold standard for auto-captions and slick visual animations",
-          "Loom / Screenity - For recording quick, anonymous digital walkthroughs and template tutorials",
-          "ChatGPT - For brainstorming limitless high-intent content keywords and niches"
+          "The Negative Gap: 'Why 99% of people fail to grow on Instagram (and the 1 prompt that fixes it)...'",
+          "The Quiet Luxury Secret: 'The silent 15-minute routine that gained me 10k followers while sleeping...'",
+          "The Step-By-Step Recipe: 'How to make AI generate your entire week of vertical content in 1 click...'"
         ]
       },
       {
         type: "quote",
-        text: "By mastering these tools, you can automate up to 80% of your production pipeline, turning content creation into a high-leverage 5-hour-a-week system."
-      }
-    ]
-  },
-  {
-    id: "blog-3",
-    title: "From $0 to $3,000/Month: The Passive Affiliate Blueprint",
-    slug: "monthly-passive-affiliate-blueprint",
-    excerpt: "The exact scaling framework. Learn which niches convert best, how to select premium affiliate offers, and the simple way to place links anonymously.",
-    readTime: "9 min read",
-    image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=400&h=250",
-    date: "May 30, 2026",
-    intro: "Building an online income is not about working harder—it is about implementing low-stress, automated, high-converting funnels. This guide details the exact blueprint to take your faceless platform from absolute zero to $3,000 per month.",
-    sections: [
-      {
-        type: "h2",
-        text: "Phase 1: Choose Your Core Monetization Niche"
-      },
-      {
-        type: "p",
-        text: "Not all niches are created equal. The highest-converting and most profitable areas for anonymous publishers are centered around Wealth (budgeting, side hustles, investing), Relationships (advice, mindfulness, family), and Personal Growth (time management, mental resilience)."
-      },
-      {
-        type: "h2",
-        text: "Phase 2: Source High-Value Digital Products"
-      },
-      {
-        type: "p",
-        text: "Rather than building complex software from scratch, you can partner with existing brands under affiliate models. Alternatively, distribute high-converting digital templates or starter guides (like our own AI Income Starter Kit) that require zero inventory and deliver 100% net margins instantly."
-      },
-      {
-        type: "h2",
-        text: "Phase 3: The 30-Day Conversion Funnel"
-      },
-      {
-        type: "p",
-        text: "To scale your revenue to a steady $3,000/month, you need of system that automatically captures warm traffic and guides them to your product offerings. Use our free faceless guide to collect emails, then supply valuable, automated email newsletters containing high-converting links."
-      },
-      {
-        type: "list",
-        text: "The three core principles to maintain anonymous success:",
-        items: [
-          "Never link directly to messy unbranded affiliate pages—use clean redirects or landing pages instead",
-          "Focus on delivering high-value digital guides before presenting a checkout button",
-          "Automate your lead caputuring with secure tools like Gumroad or standard opt-in systems"
-        ]
-      },
-      {
-        type: "quote",
-        text: "Consistency over complexity. By publishing 5 high-intent visual pins or short educational formats a week, you build a durable digital asset that earns passive income on autopilot."
-      }
-    ]
-  },
-  {
-    id: "blog-4",
-    title: "How to Earn Online Without Showing Your Face: The Smart Woman's Guide",
-    slug: "how-to-earn-online-without-showing-face",
-    excerpt: "The complete step-by-step roadmap for women to build steady digital income streams anonymously. Turn your standard browser and smartphone into an income engine.",
-    readTime: "8 min read",
-    image: "https://images.unsplash.com/photo-1542744094-3a31f103e35f?auto=format&fit=crop&q=80&w=400&h=250",
-    date: "June 2, 2026",
-    intro: "Many women dream of starting an online side-hustle but feel completely blocked by one major issue: the pressure to put their personal life, body, and face on camera. Thankfully, in 2026, the digital landscape is going through a massive shift. Using simple, free smartphone apps and a standard web browser, you can establish an anonymous digital brand that collects passive payouts while you remain 100% behind the scenes.",
-    sections: [
-      {
-        type: "h2",
-        text: "Why 'Faceless' is the Perfect Strategy for Busy Women"
-      },
-      {
-        type: "p",
-        text: "Whether you are a busy mother managing a household, a full-time professional wishing to keep your side projects private from your employer, or simply an introverted woman who values her peace of mind, faceless creator systems are the ultimate solution. By separating your personal identity from your business, you unlock incredible freedom. You do not need to style your hair, buy expensive cameras, or worry about online judgment. Your business is judged solely on the value it provides, not on who you are."
-      },
-      {
-        type: "h2",
-        text: "Your Smartphone is Your Complete Business Command Center"
-      },
-      {
-        type: "p",
-        text: "You do not need a fancy, high-end laptop or a professional studio setup to get started. In fact, most of our successful students run their entire automated systems directly from their smartphones. By downloading three simple, free apps, you can construct a high-converting digital storefront in your spare moments."
-      },
-      {
-        type: "list",
-        text: "Download these three vital tools on your phone to start immediately:",
-        items: [
-          "Canva Mobile App - To edit gorgeous, pre-made aesthetic templates, guides, and visual pins on the go",
-          "Pinterest Client - To research what high-intent keywords other women are searching for and post visual cards",
-          "CapCut Mobile or standard phone video editors - To layer aesthetic, free stock video clips with short, high-value text overlays"
-        ]
-      },
-      {
-        type: "h2",
-        text: "Step 1: Choose a Highly Profitable Visual Niche"
-      },
-      {
-        type: "p",
-        text: "The golden rule of anonymous earning is to speak to topics that other women already search for. The absolute highest converting subjects on search engines and Pinterest include positive mental habits, saving and budgeting secrets, home organization hacks, and digital templates. Pick one topic that resonates with you and align it with simple affiliate programs or done-for-you digital downloads."
-      },
-      {
-        type: "h2",
-        text: "Step 2: Package Value into Simple Digital Products"
-      },
-      {
-        type: "p",
-        text: "You do not need to write a massive 200-page academic textbook to make money. Instead, focus on small, highly actionable resources like a '30-Day Aesthetic Savings Tracker' or a bundle of '20 Ready-to-use Social Media Graphic Prompts'. Our AI Income Starter Kit teaches you how to use free AI writing assistants and Canva layouts to cook up these high-demand helpers in just single afternoon."
-      },
-      {
-        type: "h2",
-        text: "Step 3: Collect Anonymous Payouts on Autopilot"
-      },
-      {
-        type: "p",
-        text: "Once your digital guide or tracker is ready, host it on a secure, beginner-friendly payment platform like Gumroad. It is free to list your products, and they handle everything—including global security checks, customer delivery, and sending your earnings directly to your bank account or PayPal. All you have to do is place your free Gumroad link in your Pinterest profile biography."
-      },
-      {
-        type: "quote",
-        text: "You are only one simple, automated funnel away from financial peace of mind. By spending just 30 to 45 minutes a day crafting beautiful visual pins with your phone, you build an automated system that earns while you sleep."
+        text: "A perfect hook doesn't tell the whole story. It opens a curiosity loop that the reader can only close by reading your full caption or watching the video till the end."
       }
     ]
   }
 ];
-

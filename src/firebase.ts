@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-import { getFirestore, doc, setDoc, serverTimestamp, getDoc, writeBatch, increment, onSnapshot } from 'firebase/firestore';
+import { getFirestore, doc, setDoc, serverTimestamp, getDoc, writeBatch, increment, onSnapshot, collection, getDocs, query, orderBy } from 'firebase/firestore';
 import firebaseConfig from '../firebase-applet-config.json';
 
 // Initialize Firebase
@@ -117,3 +117,51 @@ export function subscribeToWaitlistCount(onUpdate: (count: number) => void) {
     return () => {};
   }
 }
+
+// Fetch all subscribers (Admin Feature)
+export async function getWaitlistSubscribers() {
+  try {
+    const q = query(collection(db, 'waitlist'), orderBy('createdAt', 'desc'));
+    const querySnapshot = await getDocs(q);
+    const subscribers: Array<{ id: string; email: string; name?: string; createdAt?: any }> = [];
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      subscribers.push({
+        id: doc.id,
+        email: data.email || "",
+        name: data.name || "",
+        createdAt: data.createdAt,
+      });
+    });
+    return { success: true, data: subscribers };
+  } catch (error) {
+    handleFirestoreError(error, OperationType.LIST, 'waitlist');
+    return { success: false, error, data: [] };
+  }
+}
+
+// Subscribe to real-time subscribers list (Admin Feature)
+export function subscribeToWaitlistSubscribers(onUpdate: (subscribers: any[]) => void) {
+  try {
+    const q = query(collection(db, 'waitlist'), orderBy('createdAt', 'desc'));
+    return onSnapshot(q, (snapshot) => {
+      const subscribers: any[] = [];
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        subscribers.push({
+          id: doc.id,
+          email: data.email || "",
+          name: data.name || "",
+          createdAt: data.createdAt ? data.createdAt.toDate() : null,
+        });
+      });
+      onUpdate(subscribers);
+    }, (error) => {
+      console.error("Error listening to waitlist: ", error);
+    });
+  } catch (err) {
+    console.error("Error setting up waitlist subscription: ", err);
+    return () => {};
+  }
+}
+
