@@ -21,7 +21,11 @@ import {
   ExternalLink,
   Star,
   MessageSquare,
-  ZoomIn
+  ZoomIn,
+  Bell,
+  MoreHorizontal,
+  Laptop,
+  Banknote
 } from "lucide-react";
 
 // Import custom components
@@ -222,110 +226,106 @@ export default function App() {
           </span>
         </div>
 
-        {/* Real Testimonial & Social Proof Card (with auto-sliding and image zoom) */}
-        <div className="w-full max-w-md bg-white border border-brand-border rounded-3xl p-5 shadow-xs hover:shadow-sm transition-all mt-2 text-left relative overflow-hidden">
-          {/* Subtle top indicator */}
-          <div className="absolute top-0 left-0 right-0 h-[2px] bg-brand-primary/20" />
-          
-          <div className="flex flex-col gap-4">
-            {/* Title & Tabs */}
-            <div className="flex items-center justify-between gap-2 border-b border-brand-border/40 pb-3">
-              <div>
-                <span className="text-[9px] font-mono font-bold tracking-widest text-brand-secondary uppercase bg-[#8F7553]/10 px-2.5 py-0.5 rounded-full">
-                  🔥 INSTANT PROOF
-                </span>
-                <h4 className="text-xs font-serif font-bold text-brand-dark mt-1">
-                  Real Creator Results
-                </h4>
-              </div>
+        {/* Modules & Blueprint Section - Copied design from inspiration image */}
+        <div className="w-full max-w-md flex flex-col items-center mt-12 mb-8 text-center px-4">
+          <div className="relative mb-6">
+            {/* Tilted bright pink tag badge */}
+            <span className="absolute -top-5 -right-6 bg-pink-500 text-white text-[9px] font-black uppercase tracking-wider px-3 py-1 rounded-md border border-zinc-900 shadow-[2px_2px_0px_#18181b] transform rotate-6 select-none z-10">
+              100+ PROMPTS
+            </span>
+            <h3 className="text-2xl font-display font-black tracking-tight text-brand-dark uppercase leading-tight">
+              TO HELP YOU <br />
+              <span className="text-3xl font-display font-black tracking-tight text-transparent" style={{ WebkitTextStroke: "1.5px #2A2621" }}>MAKE MONEY ONLINE</span>
+            </h3>
+          </div>
 
-              {/* Toggle Switch */}
-              <div className="flex bg-brand-light p-0.5 rounded-lg border border-brand-border/40 shrink-0">
-                <button
-                  type="button"
-                  onClick={() => setActiveTestimonial(0)}
-                  className={`px-2 py-1 rounded-md text-[9px] font-mono font-bold uppercase transition-all cursor-pointer ${
-                    activeTestimonial === 0
-                      ? "bg-white text-brand-secondary shadow-xs border border-brand-border/25"
-                      : "text-zinc-400 hover:text-zinc-600"
-                  }`}
-                >
-                  💬 Chat
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setActiveTestimonial(1)}
-                  className={`px-2 py-1 rounded-md text-[9px] font-mono font-bold uppercase transition-all cursor-pointer ${
-                    activeTestimonial === 1
-                      ? "bg-white text-brand-secondary shadow-xs border border-brand-border/25"
-                      : "text-zinc-400 hover:text-zinc-600"
-                  }`}
-                >
-                  📊 Growth
-                </button>
+          {/* Three light blue cards with solid dark borders and shadows */}
+          <div className="w-full flex flex-col gap-4 text-left">
+            
+            {/* Card 1: Laptop */}
+            <div className="bg-[#a5cfe9] border-2 border-zinc-900 rounded-2xl p-4 shadow-[4px_4px_0px_#18181b] flex gap-3.5 items-center hover:translate-y-[-1px] transition-transform">
+              <div className="w-11 h-11 rounded-xl bg-white border-2 border-zinc-900 flex items-center justify-center shrink-0 shadow-[1.5px_1.5px_0px_#18181b]">
+                <Laptop className="w-5 h-5 text-zinc-800 stroke-[1.8]" />
+              </div>
+              <div className="flex flex-col gap-0.5 text-zinc-900 font-display font-extrabold text-[10.5px] tracking-wide leading-relaxed">
+                <div className="flex items-start gap-1">
+                  <span className="text-zinc-800 font-black">•</span>
+                  <span>WAKE UP TO SALE NOTIFICATIONS</span>
+                </div>
+                <div className="flex items-start gap-1">
+                  <span className="text-zinc-800 font-black">•</span>
+                  <span>POST CONTENT YOU DIDN'T HAVE TO FILM</span>
+                </div>
+                <div className="flex items-start gap-1">
+                  <span className="text-zinc-800 font-black">•</span>
+                  <span>HAVE A SYSTEM THAT ALLOWS YOU TO WORK LESS</span>
+                </div>
               </div>
             </div>
 
-            {/* Testimonial Core Body */}
-            <div className="grid grid-cols-12 gap-3.5 items-center min-h-[140px] transition-all">
-              {/* Left Side: Thumbnail Preview */}
-              <div className="col-span-5 relative group">
-                <div className="absolute inset-0 bg-gradient-to-tr from-[#8F7553]/10 to-[#8F7553]/5 rounded-xl blur-xs opacity-50 group-hover:opacity-75 transition-opacity" />
-                <div 
-                  onClick={() => setExpandedImage(activeTestimonial === 0 ? "https://i.postimg.cc/W1pndTv9/IMG-20260705-111915.png" : "https://i.postimg.cc/2Sjw1rDh/IMG-20260705-081049.png")}
-                  className="relative border border-brand-border/50 rounded-xl overflow-hidden bg-brand-light p-1.5 cursor-zoom-in hover:border-brand-primary/40 transition-all"
-                >
-                  {/* Capped screenshot height inside the card */}
-                  <div className="aspect-[4/5] w-full bg-white rounded-lg overflow-hidden relative flex items-center justify-center">
-                    <img
-                      src={activeTestimonial === 0 ? "https://i.postimg.cc/W1pndTv9/IMG-20260705-111915.png" : "https://i.postimg.cc/2Sjw1rDh/IMG-20260705-081049.png"}
-                      alt={activeTestimonial === 0 ? "WhatsApp client chat screenshot" : "Instagram analytics growth dashboard"}
-                      referrerPolicy="no-referrer"
-                      className="max-h-full max-w-full object-contain group-hover:scale-[1.03] transition-transform duration-300"
-                    />
-                    <div className="absolute bottom-1 right-1 bg-black/70 backdrop-blur-xs text-[7px] font-mono font-bold text-white uppercase px-1.5 py-0.5 rounded-md flex items-center gap-0.5">
-                      <ZoomIn className="w-2 h-2" />
-                      Expand
-                    </div>
-                  </div>
-                </div>
+            {/* Card 2: Search */}
+            <div className="bg-[#a5cfe9] border-2 border-zinc-900 rounded-2xl p-4 shadow-[4px_4px_0px_#18181b] flex gap-3.5 items-center hover:translate-y-[-1px] transition-transform">
+              <div className="w-11 h-11 rounded-xl bg-white border-2 border-zinc-900 flex items-center justify-center shrink-0 shadow-[1.5px_1.5px_0px_#18181b]">
+                <Search className="w-5 h-5 text-zinc-800 stroke-[2]" />
               </div>
-
-              {/* Right Side: Copy & Marketing Promise */}
-              <div className="col-span-7 flex flex-col gap-2">
-                <div className="flex items-center gap-0.5 text-amber-500">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-3 h-3 fill-current" />
-                  ))}
-                </div>
-
-                {activeTestimonial === 0 ? (
-                  <>
-                    <h5 className="text-[10px] font-mono font-bold uppercase tracking-wider text-brand-secondary">
-                      🚀 Overnight Virality
-                    </h5>
-                    <p className="text-[11px] text-zinc-500 font-light leading-normal italic">
-                      "Oh my god, your latest video is blowing up, we reached over 140k views overnight..."
-                    </p>
-                    <p className="text-[9px] font-bold text-zinc-400 mt-1">
-                      — Client Conversation Proof
-                    </p>
-                  </>
-                ) : (
-                  <>
-                    <h5 className="text-[10px] font-mono font-bold uppercase tracking-wider text-brand-secondary">
-                      📈 Skyrocketing Growth
-                    </h5>
-                    <p className="text-[11px] text-zinc-500 font-light leading-normal italic">
-                      "Thousands of targeted followers gained organically. Retention loops are working perfectly."
-                    </p>
-                    <p className="text-[9px] font-bold text-zinc-400 mt-1">
-                      — Verified Creator Analytics
-                    </p>
-                  </>
-                )}
-              </div>
+              <p className="text-zinc-900 font-display font-extrabold text-[10.5px] tracking-wide leading-normal">
+                <span className="text-emerald-800 block text-[9px] uppercase font-mono tracking-wider mb-0.5">YOU'VE SEEN THE SUCCESS:</span>
+                AND YOU ALREADY KNOW IT'S POSSIBLE BUT YOU DON'T EVEN KNOW HOW TO START...
+              </p>
             </div>
+
+            {/* Card 3: Banknote */}
+            <div className="bg-[#a5cfe9] border-2 border-zinc-900 rounded-2xl p-4 shadow-[4px_4px_0px_#18181b] flex gap-3.5 items-center hover:translate-y-[-1px] transition-transform">
+              <div className="w-11 h-11 rounded-xl bg-white border-2 border-zinc-900 flex items-center justify-center shrink-0 shadow-[1.5px_1.5px_0px_#18181b]">
+                <Banknote className="w-5 h-5 text-zinc-800 stroke-[1.8]" />
+              </div>
+              <p className="text-zinc-900 font-display font-extrabold text-[10.5px] tracking-wide leading-normal">
+                <span className="text-[#bf5a36] block text-[9px] uppercase font-mono tracking-wider mb-0.5">I'VE BEEN THERE:</span>
+                LOOKING FOR A WAY TO EARN AN INCOME ONLINE WITHOUT THE OVERWHELM OR PRESSURE OF HAVING TO SHOW YOUR FACE.
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+        {/* "Raving Reviews" Community Section - Inspired by high-converting design */}
+        <div className="w-full max-w-md flex flex-col items-center mt-8 mb-6 text-center px-4">
+          <p className="text-[10px] font-mono font-extrabold tracking-[0.25em] text-brand-secondary uppercase mb-1">
+            DON’T JUST TAKE MY WORD FOR IT
+          </p>
+          <h3 
+            className="text-4xl md:text-5xl font-black tracking-tighter uppercase select-none text-[#bef264] mb-8 drop-shadow-[2.5px_2.5px_0px_#18181b]"
+            style={{
+              WebkitTextStroke: "2.5px #18181b",
+              paintOrder: "stroke fill",
+            }}
+          >
+            Raving Reviews
+          </h3>
+
+          {/* Testimonial Stack showing the real screenshots directly and fully, already zoomed & readable */}
+          <div className="w-full flex flex-col gap-6 text-left">
+            
+            {/* Visual Proof Card 1: Client Chat DM Screenshot */}
+            <div className="bg-white border-2 border-zinc-900 rounded-2xl p-1.5 shadow-[4px_4px_0px_#18181b] hover:translate-y-[-1px] transition-transform overflow-hidden">
+              <img
+                src="https://i.postimg.cc/W1pndTv9/IMG-20260705-111915.png"
+                alt="Verified WhatsApp client chat proof"
+                referrerPolicy="no-referrer"
+                className="w-full h-auto rounded-xl object-contain block"
+              />
+            </div>
+
+            {/* Visual Proof Card 2: Instagram Growth Dashboard Screenshot */}
+            <div className="bg-white border-2 border-zinc-900 rounded-2xl p-1.5 shadow-[4px_4px_0px_#18181b] hover:translate-y-[-1px] transition-transform overflow-hidden">
+              <img
+                src="https://i.postimg.cc/2Sjw1rDh/IMG-20260705-081049.png"
+                alt="Verified Instagram analytics proof"
+                referrerPolicy="no-referrer"
+                className="w-full h-auto rounded-xl object-contain block"
+              />
+            </div>
+
           </div>
         </div>
 
