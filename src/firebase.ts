@@ -1,11 +1,13 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-import { getFirestore, doc, setDoc, serverTimestamp, getDoc, writeBatch, increment, onSnapshot, collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { initializeFirestore, doc, setDoc, serverTimestamp, getDoc, writeBatch, increment, onSnapshot, collection, getDocs, query, orderBy } from 'firebase/firestore';
 import firebaseConfig from '../firebase-applet-config.json';
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId); /* CRITICAL: The app will break without this line */
+export const db = initializeFirestore(app, {
+  experimentalForceLongPolling: true,
+}, firebaseConfig.firestoreDatabaseId || "(default)"); /* CRITICAL: The app will break without this line */
 export const auth = getAuth(app);
 
 // Error handling types and helpers as required by Skill

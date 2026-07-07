@@ -38,6 +38,10 @@ import {
   subscribeToWaitlistSubscribers 
 } from "./firebase";
 
+// Import Google Analytics and Mixpanel utilities
+import { initGA, gaTrackPageView, gaTrackEvent } from "./lib/gtag";
+import { initMixpanel, mixpanelTrackPageView, mixpanelTrack } from "./lib/mixpanel";
+
 export default function App() {
   // Waitlist count state
   const [waitlistCount, setWaitlistCount] = useState<number>(0);
@@ -62,8 +66,16 @@ export default function App() {
   const [adminSearch, setAdminSearch] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
-  // Subscribe to live waitlist count on mount
+  // Initialize analytics and page view tracking, subscribe to waitlist count on mount
   useEffect(() => {
+    // Initialize tracking
+    initGA();
+    initMixpanel();
+
+    // Track the initial landing page view
+    gaTrackPageView("/");
+    mixpanelTrackPageView("/");
+
     const unsubscribeCount = subscribeToWaitlistCount((count) => {
       // Use fallback starter number (e.g. 147) + actual db count to make the count look lively,
       // or show exactly the database count. Let's do actual db count + 142 (simulated baseline) for premium social proof!
@@ -115,11 +127,38 @@ export default function App() {
         setSubmitted(true);
         setEmail("");
         setName("");
+        
+        // Track waitlist success in both GA and Mixpanel
+        gaTrackEvent("join_waitlist_success", {
+          subscriber_name: name || "Anonymous",
+          source: "landing-page"
+        });
+        mixpanelTrack("Join Waitlist Success", {
+          subscriber_name: name || "Anonymous",
+          source: "landing-page"
+        });
       } else {
         setErrorMsg("Failed to join waitlist. Please try again.");
+        
+        // Track waitlist failure in both GA and Mixpanel
+        gaTrackEvent("join_waitlist_failed", {
+          reason: "Firestore write returned false"
+        });
+        mixpanelTrack("Join Waitlist Failed", {
+          reason: "Firestore write returned false"
+        });
       }
     } catch (err: any) {
-      setErrorMsg(err.message || "An unexpected error occurred.");
+      const errorMsgText = err.message || "An unexpected error occurred.";
+      setErrorMsg(errorMsgText);
+      
+      // Track waitlist error in both GA and Mixpanel
+      gaTrackEvent("join_waitlist_error", {
+        error: errorMsgText
+      });
+      mixpanelTrack("Join Waitlist Error", {
+        error: errorMsgText
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -134,6 +173,18 @@ export default function App() {
     } else {
       setAdminError("Invalid administrator passkey. Hint: use 'admin'");
     }
+  };
+
+  // Track Google Doc downloads/views
+  const handleGoogleDocClick = () => {
+    gaTrackEvent("click_google_doc_resource", {
+      doc_title: "The Viral AI Animation Prompt Pack",
+      url: "https://docs.google.com/document/d/1zzW08Z2uyrO6CR-ekiSzfwTsv2nH5hry/edit"
+    });
+    mixpanelTrack("Click Google Doc Resource", {
+      doc_title: "The Viral AI Animation Prompt Pack",
+      url: "https://docs.google.com/document/d/1zzW08Z2uyrO6CR-ekiSzfwTsv2nH5hry/edit"
+    });
   };
 
   // Filter subscribers based on search query
@@ -181,7 +232,12 @@ export default function App() {
             <BookOpen className="w-4 h-4" />
           </a>
           <button 
-            onClick={() => setShowAdmin(!showAdmin)}
+            onClick={() => {
+              const nextState = !showAdmin;
+              setShowAdmin(nextState);
+              gaTrackEvent("toggle_admin_panel", { visible: nextState });
+              mixpanelTrack("Toggle Admin Panel", { visible: nextState });
+            }}
             title={showAdmin ? "Close Admin Dashboard" : "Admin Dashboard"}
             className={`w-10 h-10 rounded-xl flex items-center justify-center border transition-all shadow-sm cursor-pointer ${
               showAdmin 
@@ -307,22 +363,36 @@ export default function App() {
           <div className="w-full flex flex-col gap-6 text-left">
             
             {/* Visual Proof Card 1: Client Chat DM Screenshot */}
-            <div className="bg-white border-2 border-zinc-900 rounded-2xl p-1.5 shadow-[4px_4px_0px_#18181b] hover:translate-y-[-1px] transition-transform overflow-hidden">
+            <div 
+              onClick={() => {
+                setExpandedImage("https://i.postimg.cc/W1pndTv9/IMG-20260705-111915.png");
+                gaTrackEvent("zoom_testimonial", { image_url: "https://i.postimg.cc/W1pndTv9/IMG-20260705-111915.png", testimonial_type: "chat_proof" });
+                mixpanelTrack("Zoom Testimonial", { image_url: "https://i.postimg.cc/W1pndTv9/IMG-20260705-111915.png", testimonial_type: "chat_proof" });
+              }}
+              className="bg-white border-2 border-zinc-900 rounded-2xl p-1.5 shadow-[4px_4px_0px_#18181b] hover:translate-y-[-1px] hover:border-brand-secondary hover:shadow-[4px_4px_0px_#8f7553] transition-all duration-300 overflow-hidden cursor-zoom-in group"
+            >
               <img
                 src="https://i.postimg.cc/W1pndTv9/IMG-20260705-111915.png"
-                alt="Verified WhatsApp client chat proof"
+                alt="Verified WhatsApp client chat proof (click to zoom)"
                 referrerPolicy="no-referrer"
-                className="w-full h-auto rounded-xl object-contain block"
+                className="w-full h-auto rounded-xl object-contain block group-hover:scale-[1.01] transition-transform duration-300"
               />
             </div>
 
             {/* Visual Proof Card 2: Instagram Growth Dashboard Screenshot */}
-            <div className="bg-white border-2 border-zinc-900 rounded-2xl p-1.5 shadow-[4px_4px_0px_#18181b] hover:translate-y-[-1px] transition-transform overflow-hidden">
+            <div 
+              onClick={() => {
+                setExpandedImage("https://i.postimg.cc/2Sjw1rDh/IMG-20260705-081049.png");
+                gaTrackEvent("zoom_testimonial", { image_url: "https://i.postimg.cc/2Sjw1rDh/IMG-20260705-081049.png", testimonial_type: "growth_proof" });
+                mixpanelTrack("Zoom Testimonial", { image_url: "https://i.postimg.cc/2Sjw1rDh/IMG-20260705-081049.png", testimonial_type: "growth_proof" });
+              }}
+              className="bg-white border-2 border-zinc-900 rounded-2xl p-1.5 shadow-[4px_4px_0px_#18181b] hover:translate-y-[-1px] hover:border-brand-secondary hover:shadow-[4px_4px_0px_#8f7553] transition-all duration-300 overflow-hidden cursor-zoom-in group"
+            >
               <img
                 src="https://i.postimg.cc/2Sjw1rDh/IMG-20260705-081049.png"
-                alt="Verified Instagram analytics proof"
+                alt="Verified Instagram analytics proof (click to zoom)"
                 referrerPolicy="no-referrer"
-                className="w-full h-auto rounded-xl object-contain block"
+                className="w-full h-auto rounded-xl object-contain block group-hover:scale-[1.01] transition-transform duration-300"
               />
             </div>
 
@@ -657,6 +727,7 @@ export default function App() {
                 href="https://docs.google.com/document/d/1zzW08Z2uyrO6CR-ekiSzfwTsv2nH5hry/edit?usp=drivesdk&ouid=105286190481878467882&rtpof=true&sd=true"
                 target="_blank"
                 rel="noreferrer"
+                onClick={handleGoogleDocClick}
                 className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold font-mono tracking-widest uppercase rounded-xl transition-all shadow-[0_4px_12px_rgba(37,99,235,0.15)] cursor-pointer"
               >
                 <span>View Free Google Doc</span>
@@ -701,6 +772,7 @@ export default function App() {
                   href="https://docs.google.com/document/d/1zzW08Z2uyrO6CR-ekiSzfwTsv2nH5hry/edit?usp=drivesdk&ouid=105286190481878467882&rtpof=true&sd=true" 
                   target="_blank"
                   rel="noreferrer"
+                  onClick={handleGoogleDocClick}
                   className="absolute inset-0 bg-brand-dark/40 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-2 text-white cursor-pointer"
                 >
                   <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 shadow-lg">
@@ -809,6 +881,10 @@ export default function App() {
         <div className="text-center">
           <a
             href="#waitlist-card"
+            onClick={() => {
+              gaTrackEvent("click_bottom_cta", { target: "#waitlist-card" });
+              mixpanelTrack("Click Bottom CTA", { target: "#waitlist-card" });
+            }}
             className="inline-flex items-center gap-2 px-6 py-3.5 bg-brand-secondary hover:bg-brand-primary text-brand-light hover:text-white text-xs font-bold font-mono tracking-widest uppercase rounded-2xl transition-all shadow-md"
           >
             <span>Lock In Your $5 Spot Now</span>

@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import { ArrowLeft, Calendar, Clock, ChevronRight } from "lucide-react";
 import { BLOG_POSTS, BlogPost } from "../data";
 
+// Import Google Analytics and Mixpanel trackers
+import { gaTrackPageView, gaTrackEvent } from "../lib/gtag";
+import { mixpanelTrackPageView, mixpanelTrack } from "../lib/mixpanel";
+
 export default function BlogReader() {
   const [activePostId, setActivePostId] = useState<string | null>(null);
 
@@ -10,11 +14,34 @@ export default function BlogReader() {
   const handlePostClick = (postId: string) => {
     setActivePostId(postId);
     window.scrollTo({ top: 350, behavior: "smooth" });
+
+    // Track the read action and individual article page views
+    const post = BLOG_POSTS.find(p => p.id === postId);
+    if (post) {
+      const blogPath = `/blog/${post.slug}`;
+      gaTrackPageView(blogPath);
+      mixpanelTrackPageView(blogPath);
+
+      gaTrackEvent("read_blog_post", {
+        post_id: postId,
+        post_title: post.title,
+        post_slug: post.slug
+      });
+      mixpanelTrack("Read Blog Post", {
+        post_id: postId,
+        post_title: post.title,
+        post_slug: post.slug
+      });
+    }
   };
 
   const handleBack = () => {
     setActivePostId(null);
     window.scrollTo({ top: 350, behavior: "smooth" });
+
+    // Track return back to home directory view
+    gaTrackPageView("/");
+    mixpanelTrackPageView("/");
   };
 
   if (activePost) {
