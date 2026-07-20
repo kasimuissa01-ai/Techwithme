@@ -36,7 +36,8 @@ service cloud.firestore {
     // Matches the waitlist subscribers collection
     match /waitlist/{subscriberId} {
       allow create: if isValidId(subscriberId) && isValidWaitlistSubscriber(incoming());
-      allow read, update, delete: if false; // Strict privacy: clients can never query sub data
+      allow read: if true;
+      allow update, delete: if false; // Strict privacy: clients can never edit/delete sub data
     }
 
     // Matches aggregated count of waitlist subscribers

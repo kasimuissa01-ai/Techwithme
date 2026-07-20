@@ -125,13 +125,14 @@ export async function getWaitlistSubscribers() {
   try {
     const q = query(collection(db, 'waitlist'), orderBy('createdAt', 'desc'));
     const querySnapshot = await getDocs(q);
-    const subscribers: Array<{ id: string; email: string; name?: string; createdAt?: any }> = [];
+    const subscribers: Array<{ id: string; email: string; name?: string; source?: string; createdAt?: any }> = [];
     querySnapshot.forEach((doc) => {
       const data = doc.data();
       subscribers.push({
         id: doc.id,
         email: data.email || "",
         name: data.name || "",
+        source: data.source || "prompts_waitlist",
         createdAt: data.createdAt,
       });
     });
@@ -154,6 +155,7 @@ export function subscribeToWaitlistSubscribers(onUpdate: (subscribers: any[]) =>
           id: doc.id,
           email: data.email || "",
           name: data.name || "",
+          source: data.source || "prompts_waitlist",
           createdAt: data.createdAt ? data.createdAt.toDate() : null,
         });
       });

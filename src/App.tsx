@@ -25,11 +25,13 @@ import {
   Bell,
   MoreHorizontal,
   Laptop,
-  Banknote
+  Banknote,
+  Heart
 } from "lucide-react";
 
 // Import custom components
 import BlogReader from "./components/BlogReader";
+import RelationshipEbook from "./components/RelationshipEbook";
 
 // Import Firebase handlers
 import { 
@@ -43,6 +45,48 @@ import { initGA, gaTrackPageView, gaTrackEvent } from "./lib/gtag";
 import { initMixpanel, mixpanelTrackPageView, mixpanelTrack } from "./lib/mixpanel";
 
 export default function App() {
+  // Page view state: "prompts" or "ebook"
+  const [activeView, setActiveView] = useState<"prompts" | "ebook">(() => {
+    if (typeof window !== "undefined") {
+      const pageParam = new URLSearchParams(window.location.search).get("page");
+      if (pageParam === "ebook") return "ebook";
+      const hash = window.location.hash;
+      if (hash === "#ebook" || hash === "#relationship" || hash === "#relationship-ebook") return "ebook";
+    }
+    return "prompts";
+  });
+
+  const handleViewChange = (view: "prompts" | "ebook") => {
+    setActiveView(view);
+    const newUrl = `${window.location.pathname}?page=${view}`;
+    window.history.pushState({ path: newUrl }, "", newUrl);
+    gaTrackPageView(view === "prompts" ? "/" : "/ebook");
+    mixpanelTrackPageView(view === "prompts" ? "/" : "/ebook");
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  // Synchronize routing state with browser history and hash changes
+  useEffect(() => {
+    const handleUrlChange = () => {
+      const pageParam = new URLSearchParams(window.location.search).get("page");
+      const hash = window.location.hash;
+      if (pageParam === "ebook" || hash === "#ebook" || hash === "#relationship" || hash === "#relationship-ebook") {
+        setActiveView("ebook");
+      } else {
+        setActiveView("prompts");
+      }
+    };
+
+    window.addEventListener("popstate", handleUrlChange);
+    window.addEventListener("hashchange", handleUrlChange);
+
+    return () => {
+      window.removeEventListener("popstate", handleUrlChange);
+      window.removeEventListener("hashchange", handleUrlChange);
+    };
+  }, []);
+
   // Waitlist count state
   const [waitlistCount, setWaitlistCount] = useState<number>(0);
   
@@ -72,9 +116,12 @@ export default function App() {
     initGA();
     initMixpanel();
 
-    // Track the initial landing page view
-    gaTrackPageView("/");
-    mixpanelTrackPageView("/");
+    // Track the initial landing page view based on url parameter or hash
+    const initialViewParam = new URLSearchParams(window.location.search).get("page");
+    const initialHash = window.location.hash;
+    const initialView = (initialViewParam === "ebook" || initialHash === "#ebook" || initialHash === "#relationship" || initialHash === "#relationship-ebook") ? "ebook" : "prompts";
+    gaTrackPageView(initialView === "prompts" ? "/" : "/ebook");
+    mixpanelTrackPageView(initialView === "prompts" ? "/" : "/ebook");
 
     const unsubscribeCount = subscribeToWaitlistCount((count) => {
       // Use fallback starter number (e.g. 147) + actual db count to make the count look lively,
@@ -192,7 +239,8 @@ export default function App() {
     const term = adminSearch.toLowerCase();
     return (
       sub.email.toLowerCase().includes(term) || 
-      (sub.name && sub.name.toLowerCase().includes(term))
+      (sub.name && sub.name.toLowerCase().includes(term)) ||
+      (sub.source && sub.source.toLowerCase().includes(term))
     );
   });
 
@@ -201,42 +249,86 @@ export default function App() {
       
       {/* Top Notice Bar */}
       <div className="bg-brand-secondary text-brand-light text-center py-2 px-4 text-xs font-mono tracking-widest uppercase flex items-center justify-center gap-2">
-        <Sparkles className="w-3.5 h-3.5 animate-pulse text-brand-primary" />
-        <span>Limited Offer: Get the pack for only $5 upon launch today • 100% Guaranteed</span>
+        {activeView === "prompts" ? (
+          <>
+            <Sparkles className="w-3.5 h-3.5 animate-pulse text-brand-primary" />
+            <span>Limited Offer: Get the pack for only $5 upon launch today • 100% Guaranteed</span>
+          </>
+        ) : (
+          <>
+            <Heart className="w-3.5 h-3.5 text-rose-400 fill-rose-400 animate-pulse" />
+            <span>🔥 Free Download: Step-by-Step Psychological Relationship Blueprint</span>
+          </>
+        )}
       </div>
 
       {/* Main Elegant Header */}
-      <header className="max-w-7xl mx-auto w-full px-6 py-6 flex items-center justify-between border-b border-brand-border/40">
+      <header className="max-w-7xl mx-auto w-full px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-4 border-b border-brand-border/40">
+        {/* Logo */}
         <div className="flex items-center gap-2">
           <div className="w-9 h-9 rounded-xl bg-brand-primary/10 border border-brand-primary/25 flex items-center justify-center text-brand-secondary">
-            <Video className="w-4 h-4" />
+            {activeView === "prompts" ? <Video className="w-4 h-4" /> : <Heart className="w-4 h-4 text-rose-500 fill-rose-500" />}
           </div>
           <span className="font-serif text-lg font-bold tracking-tight text-brand-dark">
-            passiveincome.her<span className="text-brand-primary">.</span>
+            {activeView === "prompts" ? "passiveincome.her" : "alignment.her"}<span className="text-brand-primary">.</span>
           </span>
         </div>
 
+        {/* Elegant Page Tab Switcher */}
+        <div className="flex items-center gap-1 bg-brand-light p-1 rounded-2xl border border-brand-border/60 shadow-inner">
+          <button
+            onClick={() => handleViewChange("prompts")}
+            className={`px-4 py-1.5 rounded-xl text-xs font-mono font-bold tracking-tight uppercase transition-all duration-300 cursor-pointer ${
+              activeView === "prompts"
+                ? "bg-white text-brand-dark shadow-sm border border-brand-border/45 animate-[fadeIn_0.15s_ease-out]"
+                : "text-brand-dark/50 hover:text-brand-dark"
+            }`}
+          >
+            AI Prompts
+          </button>
+          <button
+            onClick={() => handleViewChange("ebook")}
+            className={`px-4 py-1.5 rounded-xl text-xs font-mono font-bold tracking-tight uppercase transition-all duration-300 cursor-pointer ${
+              activeView === "ebook"
+                ? "bg-white text-brand-dark shadow-sm border border-brand-border/45 animate-[fadeIn_0.15s_ease-out]"
+                : "text-brand-dark/50 hover:text-brand-dark"
+            }`}
+          >
+            Relationship E-Book
+          </button>
+        </div>
+
+        {/* Navigation Action Links */}
         <nav className="flex items-center gap-3">
-          <a 
-            href="#samples" 
-            title="Test Drive Prompts"
-            className="w-10 h-10 rounded-xl bg-white hover:bg-brand-light border border-brand-border hover:border-brand-primary text-brand-dark/70 hover:text-brand-secondary transition-all flex items-center justify-center shadow-sm"
-          >
-            <Sparkles className="w-4 h-4" />
-          </a>
-          <a 
-            href="#case-studies" 
-            title="Viral Blueprint"
-            className="w-10 h-10 rounded-xl bg-white hover:bg-brand-light border border-brand-border hover:border-brand-primary text-brand-dark/70 hover:text-brand-secondary transition-all flex items-center justify-center shadow-sm"
-          >
-            <BookOpen className="w-4 h-4" />
-          </a>
+          {activeView === "prompts" && (
+            <>
+              <a 
+                href="#samples" 
+                title="Test Drive Prompts"
+                className="w-10 h-10 rounded-xl bg-white hover:bg-brand-light border border-brand-border hover:border-brand-primary text-brand-dark/70 hover:text-brand-secondary transition-all flex items-center justify-center shadow-sm"
+              >
+                <Sparkles className="w-4 h-4" />
+              </a>
+              <a 
+                href="#case-studies" 
+                title="Viral Blueprint"
+                className="w-10 h-10 rounded-xl bg-white hover:bg-brand-light border border-brand-border hover:border-brand-primary text-brand-dark/70 hover:text-brand-secondary transition-all flex items-center justify-center shadow-sm"
+              >
+                <BookOpen className="w-4 h-4" />
+              </a>
+            </>
+          )}
           <button 
             onClick={() => {
               const nextState = !showAdmin;
               setShowAdmin(nextState);
               gaTrackEvent("toggle_admin_panel", { visible: nextState });
               mixpanelTrack("Toggle Admin Panel", { visible: nextState });
+              
+              if (nextState) {
+                // Scroll smoothly to the top when opening the admin page
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }
             }}
             title={showAdmin ? "Close Admin Dashboard" : "Admin Dashboard"}
             className={`w-10 h-10 rounded-xl flex items-center justify-center border transition-all shadow-sm cursor-pointer ${
@@ -250,8 +342,10 @@ export default function App() {
         </nav>
       </header>
 
-      {/* Hero Section */}
-      <section className="max-w-4xl mx-auto w-full px-6 pt-16 pb-12 text-center flex flex-col items-center gap-6">
+      {!showAdmin && activeView === "prompts" && (
+        <>
+          {/* Hero Section */}
+          <section className="max-w-4xl mx-auto w-full px-6 pt-16 pb-12 text-center flex flex-col items-center gap-6">
         
         {/* Launch Status Badge */}
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-light border border-brand-border text-xs font-mono text-brand-secondary uppercase tracking-wider">
@@ -532,10 +626,12 @@ export default function App() {
           </div>
         </div>
       </section>
+        </>
+      )}
 
       {/* Admin Panel Section */}
       {showAdmin && (
-        <section className="max-w-4xl mx-auto w-full px-6 py-8 animate-[fadeIn_0.3s_ease-out]">
+        <section id="admin-panel" className="max-w-4xl mx-auto w-full px-6 py-8 animate-[fadeIn_0.3s_ease-out] scroll-mt-8">
           <div className="bg-white border-2 border-brand-primary/40 rounded-3xl p-6 md:p-8 shadow-md">
             
             <div className="flex items-center justify-between border-b border-brand-border pb-4 mb-6">
@@ -641,7 +737,19 @@ export default function App() {
                               <td className="p-3 pl-5 font-bold text-zinc-400">{index + 1}</td>
                               <td className="p-3 font-semibold text-brand-dark">{sub.name || <span className="text-zinc-300 font-normal">Not Provided</span>}</td>
                               <td className="p-3 font-bold text-brand-secondary">{sub.email}</td>
-                              <td className="p-3 text-[10px] text-zinc-400">landing-page</td>
+                              <td className="p-3">
+                                {sub.source === "relationship_ebook" ? (
+                                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[9px] font-bold bg-rose-50 border border-rose-100 text-rose-600 uppercase font-mono">
+                                    <Heart className="w-2.5 h-2.5 fill-rose-600" />
+                                    Relationship
+                                  </span>
+                                ) : (
+                                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[9px] font-bold bg-amber-50 border border-amber-100 text-amber-600 uppercase font-mono">
+                                    <Sparkles className="w-2.5 h-2.5 fill-amber-600" />
+                                    AI Prompts
+                                  </span>
+                                )}
+                              </td>
                               <td className="p-3 pr-5 text-zinc-400">
                                 {sub.createdAt ? sub.createdAt.toLocaleString() : <span className="italic">Just now</span>}
                               </td>
@@ -676,8 +784,15 @@ export default function App() {
         </section>
       )}
 
-      {/* Sample Prompt Generator Section */}
-      <section id="samples" className="max-w-5xl mx-auto w-full px-6 py-12 flex flex-col gap-8 animate-[fadeIn_0.3s_ease-out]">
+      {/* Relationship E-Book Section */}
+      {!showAdmin && activeView === "ebook" && (
+        <RelationshipEbook />
+      )}
+
+      {!showAdmin && activeView === "prompts" && (
+        <>
+          {/* Sample Prompt Generator Section */}
+          <section id="samples" className="max-w-5xl mx-auto w-full px-6 py-12 flex flex-col gap-8 animate-[fadeIn_0.3s_ease-out]">
         <div className="text-center max-w-xl mx-auto flex flex-col gap-2 mb-2">
           <h2 className="text-2xl md:text-3xl font-serif font-bold text-brand-dark">
             Free Test-Drive Prompts
@@ -892,18 +1007,20 @@ export default function App() {
           </a>
         </div>
       </section>
+        </>
+      )}
 
       {/* Simple Footer */}
       <footer className="bg-brand-dark text-[#8E867B] border-t border-[#3C362F] py-12 px-6 mt-auto">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2">
             <span className="font-serif text-sm font-bold tracking-tight text-white">
-              passiveincome.her<span className="text-brand-primary">.</span>
+              {activeView === "prompts" ? "passiveincome.her" : "alignment.her"}<span className="text-brand-primary">.</span>
             </span>
           </div>
 
           <p className="text-[11px] font-mono text-center md:text-right font-light">
-            © 2026 passiveincome.her. All rights reserved. • Built with durable cloud synchronization.
+            © 2026 {activeView === "prompts" ? "passiveincome.her" : "alignment.her"}. All rights reserved. • <span className="hover:text-brand-primary transition-colors cursor-pointer">Privacy Policy</span> | <span className="hover:text-brand-primary transition-colors cursor-pointer">Terms of Service</span>
           </p>
         </div>
       </footer>
