@@ -9,7 +9,7 @@ service cloud.firestore {
 
     // Helper functions
     function isValidId(id) {
-      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_-]+$');
     }
 
     function incoming() {
@@ -44,13 +44,9 @@ service cloud.firestore {
     match /stats/{statId} {
       allow get: if isValidId(statId);
       allow create: if statId == 'waitlist'
-        && incoming().keys().hasAll(['count'])
-        && incoming().keys().size() == 1
         && incoming().count is int
-        && incoming().count == 1;
+        && (incoming().count == 1 || incoming().count == 0);
       allow update: if statId == 'waitlist'
-        && incoming().keys().hasAll(['count'])
-        && incoming().keys().size() == 1
         && incoming().count is int
         && incoming().count == existing().count + 1;
       allow list, delete: if false;
