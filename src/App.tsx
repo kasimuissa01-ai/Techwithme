@@ -49,19 +49,19 @@ export default function App() {
   const [activeView, setActiveView] = useState<"prompts" | "ebook">(() => {
     if (typeof window !== "undefined") {
       const pageParam = new URLSearchParams(window.location.search).get("page");
-      if (pageParam === "ebook") return "ebook";
+      if (pageParam === "prompts") return "prompts";
       const hash = window.location.hash;
-      if (hash === "#ebook" || hash === "#relationship" || hash === "#relationship-ebook") return "ebook";
+      if (hash === "#prompts" || hash === "#samples") return "prompts";
     }
-    return "prompts";
+    return "ebook";
   });
 
   const handleViewChange = (view: "prompts" | "ebook") => {
     setActiveView(view);
     const newUrl = `${window.location.pathname}?page=${view}`;
     window.history.pushState({ path: newUrl }, "", newUrl);
-    gaTrackPageView(view === "prompts" ? "/" : "/ebook");
-    mixpanelTrackPageView(view === "prompts" ? "/" : "/ebook");
+    gaTrackPageView(view === "prompts" ? "/prompts" : "/");
+    mixpanelTrackPageView(view === "prompts" ? "/prompts" : "/");
     // Scroll to top
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -71,10 +71,10 @@ export default function App() {
     const handleUrlChange = () => {
       const pageParam = new URLSearchParams(window.location.search).get("page");
       const hash = window.location.hash;
-      if (pageParam === "ebook" || hash === "#ebook" || hash === "#relationship" || hash === "#relationship-ebook") {
-        setActiveView("ebook");
-      } else {
+      if (pageParam === "prompts" || hash === "#prompts" || hash === "#samples") {
         setActiveView("prompts");
+      } else {
+        setActiveView("ebook");
       }
     };
 
@@ -119,9 +119,9 @@ export default function App() {
     // Track the initial landing page view based on url parameter or hash
     const initialViewParam = new URLSearchParams(window.location.search).get("page");
     const initialHash = window.location.hash;
-    const initialView = (initialViewParam === "ebook" || initialHash === "#ebook" || initialHash === "#relationship" || initialHash === "#relationship-ebook") ? "ebook" : "prompts";
-    gaTrackPageView(initialView === "prompts" ? "/" : "/ebook");
-    mixpanelTrackPageView(initialView === "prompts" ? "/" : "/ebook");
+    const initialView = (initialViewParam === "prompts" || initialHash === "#prompts" || initialHash === "#samples") ? "prompts" : "ebook";
+    gaTrackPageView(initialView === "prompts" ? "/prompts" : "/");
+    mixpanelTrackPageView(initialView === "prompts" ? "/prompts" : "/");
 
     const unsubscribeCount = subscribeToWaitlistCount((count) => {
       // Use fallback starter number (e.g. 147) + actual db count to make the count look lively,

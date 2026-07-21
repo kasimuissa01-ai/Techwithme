@@ -23,6 +23,8 @@ import { addWaitlistSubscriber } from "../firebase";
 import { gaTrackEvent } from "../lib/gtag";
 import { mixpanelTrack } from "../lib/mixpanel";
 
+const pdfUrl = "https://vqgnxqabvmmpfoiceass.supabase.co/storage/v1/object/public/posters/How_to_Make_a_Man_Fall_in_Love%20(1).pdf";
+
 export default function RelationshipEbook() {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -46,6 +48,12 @@ export default function RelationshipEbook() {
         setSubmitted(true);
         gaTrackEvent("download_ebook_success", { email, name });
         mixpanelTrack("Download EBook Success", { email, name });
+        // Attempt to open the PDF in a new tab immediately
+        try {
+          window.open(pdfUrl, "_blank");
+        } catch (err) {
+          console.warn("Pop-up blocked auto-opening PDF:", err);
+        }
       } else {
         setErrorMsg("Failed to submit. Please try again.");
         gaTrackEvent("download_ebook_failed", { email });
@@ -197,15 +205,23 @@ export default function RelationshipEbook() {
                   <Check className="w-6 h-6 stroke-[3]" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-serif font-bold text-brand-dark">Check Your Inbox!</h3>
+                  <h3 className="text-xl font-serif font-bold text-brand-dark">Access Granted!</h3>
                   <p className="text-xs text-zinc-500 max-w-xs mx-auto mt-2 leading-relaxed">
-                    Thank you <strong className="font-semibold text-brand-dark">{name || "there"}</strong>! Your copy of <em className="not-italic font-semibold">How to Make a Man Fall in Love If He Resists Commitment</em> is being delivered to <strong className="font-semibold text-brand-dark">{email}</strong> right now.
+                    Thank you <strong className="font-semibold text-brand-dark">{name || "there"}</strong>! Your psychological relationship blueprint is ready. Click below to read or save your copy immediately:
                   </p>
-                  <p className="text-[11px] text-brand-secondary font-mono mt-4 p-3.5 bg-brand-light rounded-xl border border-brand-border inline-block">
-                    💾 Status: Download Link Active
-                  </p>
+
+                  <a
+                    href={pdfUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full mt-5 py-4 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl text-xs uppercase tracking-widest transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <BookOpen className="w-4 h-4 text-white" />
+                    <span>OPEN & READ MY PDF NOW</span>
+                  </a>
+
                   <p className="text-[10px] text-zinc-400 mt-4 leading-relaxed">
-                    If you don't receive it in 3 minutes, please check your spam folder or Promotions tab. Get ready to shift your paradigm!
+                    You can bookmark the link or download the file directly to your device for convenient access.
                   </p>
                 </div>
               </div>
